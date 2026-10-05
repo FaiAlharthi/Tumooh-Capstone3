@@ -1,5 +1,6 @@
 package org.fadhel.tumoohplatform.model;
 
+
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
