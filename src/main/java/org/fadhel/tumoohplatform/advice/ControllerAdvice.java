@@ -8,6 +8,8 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
+import java.util.Map;
+import java.util.HashMap;
 
 @RestControllerAdvice
 public class ControllerAdvice {
@@ -20,9 +22,12 @@ public class ControllerAdvice {
 
     // Handles validation errors triggered by @Valid annotations
     @ExceptionHandler(MethodArgumentNotValidException.class)
-    public ResponseEntity<ApiResponse> handleValidationException(MethodArgumentNotValidException e) {
-        String message = e.getFieldError() != null ? e.getFieldError().getDefaultMessage() : "Validation error";
-        return ResponseEntity.status(400).body(new ApiResponse(message));
+    public ResponseEntity<Map<String, String>> handleValidationExceptions(MethodArgumentNotValidException ex) {
+        Map<String, String> errors = new HashMap<>();
+        ex.getBindingResult().getFieldErrors().forEach(error -> 
+            errors.put(error.getField(), error.getDefaultMessage())
+        );
+        return ResponseEntity.status(400).body(errors);
     }
 
     // Handles database-level constraint violations
