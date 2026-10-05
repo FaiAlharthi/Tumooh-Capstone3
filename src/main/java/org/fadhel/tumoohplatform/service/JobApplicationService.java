@@ -27,14 +27,16 @@ public class JobApplicationService {
     }
 
     public void addJobApplication(Long userId, Long jobId, JobApplication jobApplication) {
-        User user = userRepository.findUserById(userId);
+        User user = userRepository.findById(userId).orElse(null);
         if (user == null) {
             throw new ApiException("User not found");
         }
-        Job job = jobRepository.findJobById(jobId);
+        
+        Job job = jobRepository.findById(jobId).orElse(null);
         if (job == null) {
             throw new ApiException("Job not found");
         }
+        
         jobApplication.setUser(user);
         jobApplication.setJob(job);
         jobApplication.setCreatedAt(LocalDateTime.now());

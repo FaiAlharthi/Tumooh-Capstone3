@@ -1,24 +1,34 @@
 package org.fadhel.tumoohplatform.model;
 
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import jakarta.persistence.*;
+import lombok.*;
+
+import java.time.LocalDateTime;
 
 @Getter
 @Setter
 @AllArgsConstructor
 @NoArgsConstructor
+@Builder
 @Entity
 public class Reminder {
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
+    @Column(nullable = false)
+    private String reminderLetter;
+
+    @Column(nullable = false)
+    private LocalDateTime reminderDate;
+
+    @Column(nullable = false)
+    private Boolean isSent;
+
+    @ManyToOne
+    @JoinColumn
+    @JsonIgnore
     private JobApplication jobApplication;
-    private String name;
 }
