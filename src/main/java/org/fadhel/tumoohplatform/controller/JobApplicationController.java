@@ -8,7 +8,10 @@ import org.fadhel.tumoohplatform.dto.in.ApplicationStatusRequest;
 import org.fadhel.tumoohplatform.dto.in.DatesRequest;
 import org.fadhel.tumoohplatform.dto.in.ManualApplicationRequest;
 import org.fadhel.tumoohplatform.model.JobApplication;
+import org.fadhel.tumoohplatform.service.InsightsService;
 import org.fadhel.tumoohplatform.service.JobApplicationService;
+import org.fadhel.tumoohplatform.service.ReplyMessageService;
+import org.fadhel.tumoohplatform.service.suggestNextStepService;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -18,6 +21,9 @@ import org.springframework.web.bind.annotation.*;
 public class JobApplicationController {
 
     private final JobApplicationService jobApplicationService;
+    private final suggestNextStepService nextStepService;
+    private final InsightsService insightsService;
+    private final ReplyMessageService replyMessageService;
 
     @GetMapping("/get")
     public ResponseEntity<?> getAllJobApplications() {
@@ -73,6 +79,21 @@ public class JobApplicationController {
     @GetMapping("/interviews/{userId}/{applicationId}")
     public ResponseEntity<?> allApplicationInterviews(@PathVariable Long userId, @PathVariable Long applicationId) {
         return ResponseEntity.status(200).body(jobApplicationService.allApplicationInterviews(userId, applicationId));
+    }
+
+    @GetMapping("/next-step/{userId}/{applicationId}")
+    public ResponseEntity<?> suggestNextStep(@PathVariable Long userId, @PathVariable Long applicationId) {
+        return ResponseEntity.status(200).body(nextStepService.suggestNextStep(userId, applicationId));
+    }
+
+    @GetMapping("/insights/{userId}")
+    public ResponseEntity<?> getInsights(@PathVariable Long userId) {
+        return ResponseEntity.status(200).body(insightsService.getInsights(userId));
+    }
+
+    @GetMapping("/reply/{userId}/{applicationId}")
+    public ResponseEntity<?> writeReply(@PathVariable Long userId, @PathVariable Long applicationId) {
+        return ResponseEntity.status(200).body(replyMessageService.writeReply(userId, applicationId));
     }
 
 

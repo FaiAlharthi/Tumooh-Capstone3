@@ -3,14 +3,18 @@ package org.fadhel.tumoohplatform.service;
 import org.fadhel.tumoohplatform.dto.in.ApplicationStatusRequest;
 import org.fadhel.tumoohplatform.dto.in.DatesRequest;
 import org.fadhel.tumoohplatform.dto.in.ManualApplicationRequest;
+import org.fadhel.tumoohplatform.dto.out.NextStepResponse;
 import org.fadhel.tumoohplatform.model.*;
 import org.fadhel.tumoohplatform.repository.CompanyRepository;
 import org.fadhel.tumoohplatform.repository.JobApplicationRepository;
 import org.fadhel.tumoohplatform.repository.JobRepository;
 import org.fadhel.tumoohplatform.repository.UserRepository;
+import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 import lombok.RequiredArgsConstructor;
 import org.fadhel.tumoohplatform.Api.ApiException;
+import org.springframework.web.server.ResponseStatusException;
+import tools.jackson.databind.ObjectMapper;
 
 import java.time.LocalDate;
 import java.util.ArrayList;
@@ -26,6 +30,10 @@ public class JobApplicationService {
     private final JobRepository jobRepository;
     private final UserRepository userRepository;
     private final CompanyRepository companyRepository;
+
+
+    private final GeminiService geminiService;
+    private final ObjectMapper objectMapper;
 
     public List<JobApplication> getAllJobApplications() {
         return jobApplicationRepository.findAll();
