@@ -32,3 +32,6 @@ build/
 ### VS Code ###
 .vscode/
 .DS_Store
+
+# Ignore user upload directory
+/uploads/
