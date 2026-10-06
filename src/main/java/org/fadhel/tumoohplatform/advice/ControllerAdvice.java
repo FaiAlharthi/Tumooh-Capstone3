@@ -8,6 +8,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
+import org.springframework.web.server.ResponseStatusException;
 import java.util.Map;
 import java.util.HashMap;
 
@@ -34,6 +35,12 @@ public class ControllerAdvice {
     @ExceptionHandler(DataIntegrityViolationException.class)
     public ResponseEntity<ApiResponse> handleDataIntegrityViolation(DataIntegrityViolationException e) {
         return ResponseEntity.status(400).body(new ApiResponse("Data integrity error: unique constraint or key rule violated"));
+    }
+
+    // Handles upstream/AI service failures with their proper status codes (e.g. 502)
+    @ExceptionHandler(ResponseStatusException.class)
+    public ResponseEntity<ApiResponse> handleResponseStatusException(ResponseStatusException e) {
+        return ResponseEntity.status(e.getStatusCode()).body(new ApiResponse(e.getReason()));
     }
 
 }
