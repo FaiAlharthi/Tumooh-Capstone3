@@ -1,6 +1,8 @@
 package org.fadhel.tumoohplatform.repository;
 
 import org.fadhel.tumoohplatform.model.Company;
+import org.fadhel.tumoohplatform.model.JobApplication;
+import org.fadhel.tumoohplatform.model.User;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.stereotype.Repository;
@@ -19,12 +21,12 @@ public interface CompanyRepository extends JpaRepository<Company, Long> {
     List<Company> findCompaniesByIndustryEn(String industryEn);
 
     @Query("""
-            select distinct c from Company c
-            left join c.aliases a
-            where lower(c.nameEn) like lower(concat('%', ?1, '%'))
-               or c.nameAr like concat('%', ?1, '%')
-               or lower(a) like lower(concat('%', ?1, '%'))
-            """)
-    List<Company> search(String q);
+        select distinct c from Company c
+        left join c.aliases a
+        where lower(c.nameEn) = lower(?1)
+           or c.nameAr = ?1
+           or lower(a) = lower(?1)
+        """)
+    Company findByAnyName(String name);
 
 }
