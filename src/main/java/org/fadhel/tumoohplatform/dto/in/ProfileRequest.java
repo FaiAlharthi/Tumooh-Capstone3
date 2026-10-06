@@ -34,8 +34,8 @@ public class ProfileRequest {
     @Max(value = 2100, message = "Graduation year cannot exceed 2100")
     private Integer graduationYear;
 
-    @Size(max = 30, message = "Cannot add more than 30 skills")
-    private Set<String> skills;
+    @Size(max = 255, message = "skills must not exceed 255 characters")
+    private String skills;
 
     @Size(max = 255, message = "LinkedIn URL must not exceed 255 characters")
     private String linkedinUrl;

@@ -36,7 +36,7 @@ public class Profile {
     private Integer graduationYear;
 
     @Column(nullable = true)
-    private Set<String> skills;
+    private String skills;
 
     @Column(nullable = true)
     private String linkedinUrl;
