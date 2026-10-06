@@ -20,7 +20,7 @@ public class ProfileResponse {
     private String phoneNumber;
     private String major;
     private Integer graduationYear;
-    private Set<String> skills;
+    private String skills;
     private String linkedinUrl;
     private String githubUrl;
     private String cvUrl;

@@ -7,8 +7,10 @@ import org.fadhel.tumoohplatform.dto.in.ProfileRequest;
 import org.fadhel.tumoohplatform.dto.out.ProfileResponse;
 import org.fadhel.tumoohplatform.service.ProfileService;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 
 import java.util.List;
 
@@ -51,6 +53,15 @@ public class ProfileController {
     public ResponseEntity<ApiResponse> deleteProfile(@PathVariable Long userId) {
         profileService.deleteProfile(userId);
         return ResponseEntity.status(200).body(new ApiResponse("Profile deleted successfully"));
+    }
+
+    @PostMapping(value = "/user/{userId}/upload-cv", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
+    public ResponseEntity<ProfileResponse> uploadCv(
+            @PathVariable Long userId,
+            @RequestParam("file") MultipartFile file) {
+
+        ProfileResponse updatedProfile = profileService.uploadCv(userId, file);
+        return ResponseEntity.ok(updatedProfile);
     }
 
 }

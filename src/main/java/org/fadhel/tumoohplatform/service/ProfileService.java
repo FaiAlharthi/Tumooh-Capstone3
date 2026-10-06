@@ -10,6 +10,7 @@ import org.fadhel.tumoohplatform.repository.ProfileRepository;
 import org.fadhel.tumoohplatform.repository.UserRepository;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.web.multipart.MultipartFile;
 
 import java.util.List;
 import java.util.stream.Collectors;
@@ -20,6 +21,7 @@ public class ProfileService {
 
     private final ProfileRepository profileRepository;
     private final UserRepository userRepository;
+    private final FileStorageService fileStorageService;
 
     @Transactional
     public ProfileResponse createProfile(Long userId, ProfileRequest requestDto) {
@@ -89,6 +91,21 @@ public class ProfileService {
             profile.getUser().setProfile(null);
         }
         profileRepository.delete(profile);
+    }
+
+    @Transactional
+    public ProfileResponse uploadCv(Long userId, MultipartFile file) {
+        Profile profile = profileRepository.findById(userId)
+                .orElseThrow(() -> new ApiException("Profile not found for user id: " + userId));
+
+        // Save file and get generated URL path
+        String fileUrl = fileStorageService.saveCvFile(file);
+
+        // Store URL path in entity
+        profile.setCvUrl(fileUrl);
+
+        Profile updatedProfile = profileRepository.save(profile);
+        return mapToResponseDto(updatedProfile);
     }
 
     private ProfileResponse mapToResponseDto(Profile profile) {
