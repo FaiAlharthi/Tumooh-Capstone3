@@ -27,7 +27,7 @@ public class JobApplicationService {
     }
 
     public void addJobApplication(Long userId, Long jobId, JobApplication jobApplication) {
-        User user = userRepository.finUserById(userId);
+        User user = userRepository.findUserById(userId);
         if (user == null) {
             throw new ApiException("User not found");
         }

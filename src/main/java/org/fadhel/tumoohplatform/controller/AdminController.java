@@ -33,7 +33,7 @@ public class AdminController {
     public ResponseEntity<ApiResponse> addAdmin(@RequestParam(required = false) Long adminId,
                                                 @Valid @RequestBody Admin admin) {
         adminService.addAdmin(adminId, admin);
-        return ResponseEntity.status(201).body(new ApiResponse("Admin created successfully"));
+        return ResponseEntity.status(201).body(new ApiResponse("Admin added successfully"));
     }
 
     // to update an admin (admin-only)
