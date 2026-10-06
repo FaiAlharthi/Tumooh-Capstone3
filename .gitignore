@@ -35,3 +35,4 @@ build/
 
 # Ignore user upload directory
 /uploads/
+src/main/resources/application-local.properties
