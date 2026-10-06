@@ -1,6 +1,5 @@
 package org.fadhel.tumoohplatform.service;
 
-
 import lombok.RequiredArgsConstructor;
 import org.fadhel.tumoohplatform.Api.ApiException;
 import org.fadhel.tumoohplatform.dto.in.ReminderRequest;
