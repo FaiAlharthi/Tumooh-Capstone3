@@ -27,14 +27,14 @@ public class Company {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
+
     @NotEmpty(message = "English name is required")
     @Size(max = 100, message = "English name must be at most 100 characters")
     @Column(nullable = false, length = 100)
     private String nameEn;
 
-    @NotEmpty(message = "Arabic name is required")
     @Size(max = 100, message = "Arabic name must be at most 100 characters")
-    @Column(nullable = false, length = 100)
+    @Column( length = 100)
     private String nameAr;
 
     @ElementCollection
@@ -44,34 +44,35 @@ public class Company {
 
     @NotEmpty(message = "English industry is required")
     @Size(max = 60, message = "English industry must be at most 60 characters")
-    @Column(nullable = false, length = 60)
+    @Column( length = 60)
     private String industryEn;
 
-    @NotEmpty(message = "Arabic industry is required")
     @Size(max = 60, message = "Arabic industry must be at most 60 characters")
-    @Column(nullable = false, length = 60)
+    @Column( length = 60)
     private String industryAr;
 
-    @NotEmpty(message = "Website is required")
     @Pattern(regexp = "^https?://[\\w.-]+\\.[a-zA-Z]{2,}(/\\S*)?$", message = "Website must be a valid URL starting with http:// or https://")
-    @Column(nullable = false, unique = true, length = 150)
+    @Column(unique = true, length = 150)
     private String website;
 
     @Size(max = 500, message = "Logo URL must be at most 500 characters")
-    @Column(nullable = false, length = 500)
+    @Column(length = 500)
     private String companyLogoUrl;
 
-    @NotEmpty(message = "English description is required")
     @Size(max = 500, message = "English description must be at most 500 characters")
-    @Column(nullable = false, length = 500)
+    @Column( length = 500)
     private String descriptionEn;
 
-    @NotEmpty(message = "Arabic description is required")
     @Size(max = 500, message = "Arabic description must be at most 500 characters")
-    @Column(nullable = false, length = 500)
+    @Column( length = 500)
     private String descriptionAr;
+
+    @Column(nullable = false)
+    private Boolean verified = false;
 
     @OneToMany(mappedBy = "company", cascade = CascadeType.ALL)
     @JsonIgnore
     private Set<Job> jobs;
+
+
 }

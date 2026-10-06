@@ -28,7 +28,10 @@ public class CompanySeeder implements CommandLineRunner {
         InputStream in = new ClassPathResource("data/saudi_companies.json").getInputStream();
         List<Company> companies = objectMapper.readValue(in, new TypeReference<>() {});
 
-        companies.forEach(c -> c.setId(null));
+        companies.forEach(c -> {
+            c.setId(null);
+            c.setVerified(true);
+        });
         companyRepository.saveAll(companies);
     }
 }

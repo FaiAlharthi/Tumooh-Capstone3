@@ -2,6 +2,7 @@ package org.fadhel.tumoohplatform.model;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
+import jakarta.validation.constraints.FutureOrPresent;
 import jakarta.validation.constraints.NotEmpty;
 import jakarta.validation.constraints.Pattern;
 import lombok.AllArgsConstructor;
@@ -9,6 +10,7 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.Set;
 
@@ -36,9 +38,10 @@ public class JobApplication {
     private String status;
 
     @Column(nullable = false, updatable = false)
-    private LocalDateTime createdAt;
+    private LocalDate createdAt;
 
-    private LocalDateTime closedAt;
+    @FutureOrPresent
+    private LocalDate closedAt;
 
     @OneToMany(mappedBy = "jobApplication", cascade = CascadeType.ALL)
     @JsonIgnore

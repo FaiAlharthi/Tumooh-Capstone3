@@ -15,4 +15,6 @@ public interface JobRepository extends JpaRepository<Job, Long> {
     List<Job> findJobsByCompany(Company company);
 
     List<Job> findJobsByPositionContainingIgnoreCase(String position);
+
+    Job findJobByCompanyAndPositionIgnoreCaseAndDescriptionIgnoreCase(Company company, String position, String description);
 }
