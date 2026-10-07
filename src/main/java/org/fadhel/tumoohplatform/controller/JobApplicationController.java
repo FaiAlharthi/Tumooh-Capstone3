@@ -43,10 +43,15 @@ public class JobApplicationController {
         return ResponseEntity.status(200).body(new ApiResponse("Job application updated"));
     }
 
-    @DeleteMapping("/delete/{id}")
-    public ResponseEntity<?> deleteJobApplication(@PathVariable Long id) {
-        jobApplicationService.deleteJobApplication(id);
+    @DeleteMapping("/delete/{userId}/{applicationId}")
+    public ResponseEntity<?> deleteJobApplication(@PathVariable Long userId, @PathVariable Long applicationId) {
+        jobApplicationService.deleteJobApplication(userId,applicationId);
         return ResponseEntity.status(200).body(new ApiResponse("Job application deleted"));
+    }
+
+    @GetMapping("/myApplications/{userId}")
+    public ResponseEntity<?> getMyApplications(@PathVariable Long userId) {
+        return ResponseEntity.status(200).body(jobApplicationService.getMyApplications(userId));
     }
 
     @PutMapping("/update-status/{userId}/{applicationId}")
@@ -61,17 +66,18 @@ public class JobApplicationController {
         return ResponseEntity.status(200).body(new ApiResponse("Job application added"));
     }
 
-    @GetMapping("/status/{userId}")
+    @PostMapping("/status/{userId}")
     public ResponseEntity<?> getApplicationsByStatus(@PathVariable Long userId, @RequestBody @Valid ApplicationStatusRequest status) {
         return ResponseEntity.status(200).body(jobApplicationService.getApplicationsByStatus(userId, status));
     }
 
+    //history of applications with specific company
     @GetMapping("/history/{userId}/{companyName}")
     public ResponseEntity<?> applicationsHistoryByCompany(@PathVariable Long userId, @PathVariable String companyName) {
         return ResponseEntity.status(200).body(jobApplicationService.applicationsHistoryByCompany(userId, companyName));
     }
 
-    @GetMapping("/period/{userId}")
+    @PostMapping("/period/{userId}")
     public ResponseEntity<?> periodApplications(@PathVariable Long userId, @RequestBody @Valid DatesRequest period) {
         return ResponseEntity.status(200).body(jobApplicationService.periodApplications(userId, period));
     }
@@ -95,7 +101,5 @@ public class JobApplicationController {
     public ResponseEntity<?> writeReply(@PathVariable Long userId, @PathVariable Long applicationId) {
         return ResponseEntity.status(200).body(replyMessageService.writeReply(userId, applicationId));
     }
-
-
 
 }

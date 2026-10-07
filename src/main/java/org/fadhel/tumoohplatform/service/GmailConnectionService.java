@@ -10,6 +10,7 @@ import org.fadhel.tumoohplatform.model.GmailConnection;
 import org.fadhel.tumoohplatform.model.User;
 import org.fadhel.tumoohplatform.repository.GmailConnectionRepository;
 import org.fadhel.tumoohplatform.repository.UserRepository;
+import org.fadhel.tumoohplatform.dto.out.GmailStatusResponse;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
@@ -22,6 +23,7 @@ public class GmailConnectionService {
     private final UserRepository userRepository;
     private final GmailConnectionRepository gmailConnectionRepository;
 
+    //connect with the user Gmail
     public void connectGmail(Long userId, GmailConnectRequest request) {
         User user = userRepository.findUserById(userId);
         if (user == null) {
@@ -55,4 +57,17 @@ public class GmailConnectionService {
         connection.setLastSyncedAt(LocalDateTime.now());
         gmailConnectionRepository.save(connection);
     }
+
+    public GmailStatusResponse getGmailStatus(Long userId) {
+        User user = userRepository.findUserById(userId);
+        if (user == null) {
+            throw new ApiException("user not found");
+        }
+        GmailConnection connection = gmailConnectionRepository.findGmailConnectionByUser(user);
+        if (connection == null) {
+            return new GmailStatusResponse(false, null, null);
+        }
+        return new GmailStatusResponse(true, connection.getGmailAddress(), connection.getLastSyncedAt());
+    }
+
 }
