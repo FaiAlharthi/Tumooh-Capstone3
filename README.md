@@ -298,88 +298,88 @@ classDiagram
     direction LR
 
     class User {
-        +Long id
-        +String email*
-        +String password*
-        +LocalDateTime createdAt
+        -Long id
+        -String email*
+        -String password*
+        -LocalDateTime createdAt
     }
 
     class Profile {
-        +Long id
-        +String fullName*
-        +String phoneNumber*
-        +String major*
-        +Integer graduationYear*
-        +String skills
-        +String bio
-        +String profileImage
-        +String cvUrl
-        +String linkedinUrl
-        +String githubUrl
+        -Long id
+        -String fullName*
+        -String phoneNumber*
+        -String major*
+        -Integer graduationYear*
+        -String skills
+        -String bio
+        -String profileImage
+        -String cvUrl
+        -String linkedinUrl
+        -String githubUrl
     }
 
     class Admin {
-        +Long id
-        +String name*
-        +String email*
-        +String password*
-        +String role
+        -Long id
+        -String name*
+        -String email*
+        -String password*
+        -String role
     }
 
     class Company {
-        +Long id
-        +String nameEn*
-        +String nameAr*
-        +String industryEn
-        +String website
-        +String companyLogoUrl
-        +List~String~ aliases
-        +Boolean verified
+        -Long id
+        -String nameEn*
+        -String nameAr*
+        -String industryEn
+        -String website
+        -String companyLogoUrl
+        -List~String~ aliases
+        -Boolean verified
     }
 
     class Job {
-        +Long id
-        +String position*
-        +String description*
+        -Long id
+        -String position*
+        -String description*
     }
 
     class JobApplication {
-        +Long id
-        +String status*
-        +LocalDate createdAt*
-        +LocalDate closedAt
+        -Long id
+        -String status*
+        -LocalDate createdAt*
+        -LocalDate closedAt
     }
 
     class Interview {
-        +Long id
-        +LocalDateTime interviewDate
-        +String status
-        +Boolean reminderSent
+        -Long id
+        -LocalDateTime interviewDate
+        -String status
+        -Boolean reminderSent
     }
 
     class Reminder {
-        +Long id
-        +String reminderLetter*
-        +LocalDateTime reminderDate*
-        +Boolean isSent*
+        -Long id
+        -String reminderLetter*
+        -LocalDateTime reminderDate*
+        -Boolean isSent*
     }
 
     class MockInterview {
-        +Long id
-        +String jobTitle
-        +String sessionQuestions
-        +String sessionTelemetry
-        +String audioFilePath
-        +Double aiScore
-        +Double speechClarity
-        +String strengths
-        +String weaknesses
+        -Long id
+        -String jobTitle
+        -String sessionQuestions
+        -String sessionTelemetry
+        -String audioFilePath
+        -Double aiScore
+        -Double speechClarity
+        -String strengths
+        -String weaknesses
     }
 
     class GmailConnection {
-        +Long id
-        +String gmailAddress*
-        +LocalDateTime lastSyncedAt
+        -Long id
+        -String gmailAddress*
+        -LocalDateTime lastSyncedAt
     }
 
     User "1" <--> "1" Profile : shared PK
@@ -394,8 +394,8 @@ classDiagram
 
     classDef entity fill:#e8f4fd,stroke:#2b6cb0,color:#1a202c
     classDef auth fill:#fef3c7,stroke:#b7791f,color:#1a202c
-    class User,Profile,Company,Job,JobApplication,Interview,Reminder,MockInterview,GmailConnection entity
-    class Admin auth
+    cssClass "User,Profile,Company,Job,JobApplication,Interview,Reminder,MockInterview,GmailConnection" entity
+    cssClass "Admin" auth
 ```
 
 > `*` = required (NOT NULL). `JobApplication.status` ∈ `Applied | InProgress | Offered | Rejected | Withdrawn`. The `appPassword` field on `GmailConnection` exists in the schema but is omitted here.
