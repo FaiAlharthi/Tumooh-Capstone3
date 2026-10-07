@@ -483,3 +483,78 @@ Produces a runnable JAR at `target/tumooh-platform-0.0.1-SNAPSHOT.jar`:
 ```bash
 java -jar target/tumooh-platform-0.0.1-SNAPSHOT.jar
 ```
+
+
+---
+
+## Fai Alharthi: Job Applications, Gmail Sync and Companies
+
+### What I built
+- **Saudi companies dataset**: 1,008 companies with English and Arabic names, aliases, industry, website, description and logo. Loaded automatically by `CompanySeeder` on first startup (`verified = true`).
+- **Job application tracker**: full lifecycle of a user's applications, filters, history, interviews and manual entry.
+- **AI features (Gemini)**: next step suggestion, job search insights and reply drafts.
+- **Gmail sync (IMAP)**: reads company emails every night, adds new applications, updates statuses and adds interviews automatically.
+- **WhatsApp notifications (UltraMsg)** when an application status changes from Gmail.
+- **Applications page** (`/applications`): dashboard, filters, details drawer, AI tools, interview scheduling and Gmail setup.
+
+### Error responses
+| Case | Status | Body |
+|---|---|---|
+| Business rule error (`ApiException`) | 400 | `{ "message": "..." }` |
+| Validation error (`@Valid`) | 400 | `{ "message": "<first field error>" }` |
+| AI generation failed | 502 | `AI generation failed. Please try again.` |
+
+### CRUD (short)
+| Resource | Endpoints | Notes |
+|---|---|---|
+| Companies `/api/v1/companies` | `GET /get`, `POST /add`, `PUT /update/{id}`, `DELETE /delete/{id}` | `nameEn` and `industryEn` required, `website` must be a valid URL and unique |
+| Jobs `/api/v1/jobs` | `GET /get`, `POST /add/{companyId}`, `PUT /update/{id}`, `DELETE /delete/{id}` | `position` 2 to 100 chars, `description` 10 to 5000 chars, rejects unknown company |
+| Job applications `/api/v1/job-applications` | `GET /get`, `POST /add/{userId}/{jobId}`, `PUT /update/{id}` | `status` defaults to `Applied`, `createdAt` is set to today, rejects unknown user or job |
+
+### Job application endpoints `/api/v1/job-applications`
+Valid statuses (case sensitive): `Applied`, `InProgress`, `Offered`, `Rejected`, `Withdrawn`
+
+| Method | Endpoint | Accepts | Rejects |
+|---|---|---|---|
+| GET | `/myApplications/{userId}` | Path only. Returns the user's applications (empty list if none) | User not found |
+| POST | `/add-manual/{userId}` | `{ companyName*, position*, description?, status? }` | Missing name or title, description under 10 chars, invalid status, an active application for the same job |
+| PUT | `/update-status/{userId}/{applicationId}` | `{ status* }` | Invalid status, application not found, application of another user |
+| DELETE | `/delete/{userId}/{applicationId}` | Path only. Also deletes its interviews and reminders | User or application not found, application of another user |
+| POST | `/status/{userId}` | `{ status* }` | Invalid status, no applications with this status |
+| GET | `/history/{userId}/{companyName}` | Company name in English, Arabic or any alias | Company not found, no applications with this company |
+| POST | `/period/{userId}` | `{ startDate*, endDate* }` as `yyyy-MM-dd`, both days included | Start after end, no applications in this period |
+| GET | `/interviews/{userId}/{applicationId}` | Path only | Application not found, application of another user, no interviews |
+
+**Manual add logic:** the company is matched by English name, Arabic name or alias. If it does not exist, a new company is created with `verified = false`, industry `Other` and a placeholder logo. The job is reused if the same company, title and description already exist. A second application for the same job is allowed only if the old one is `Rejected` or `Withdrawn`.
+
+### AI endpoints (Gemini) `/api/v1/job-applications`
+| Method | Endpoint | Returns | Rejects |
+|---|---|---|---|
+| GET | `/next-step/{userId}/{applicationId}` | `{ nextStep, reason }` based on company, title, status and interviews | Application not found or of another user |
+| GET | `/insights/{userId}` | Counts per status, industries, total interviews, plus AI `strengths`, `concerns`, `recommendations` | User has no applications |
+| GET | `/reply/{userId}/{applicationId}` | `[{ subject, reply }]`. `Offered` gives 2 drafts (accept, or ask for time). `Rejected` gives 1 draft. Signed with the profile full name | Any status other than `Offered` or `Rejected` |
+
+### Gmail sync `/api/v1/gmail`
+| Method | Endpoint | Accepts | Rejects |
+|---|---|---|---|
+| POST | `/connect/{userId}` | `{ appPassword* }`. Uses the user's account email, which must be a Gmail address. Logs in to Gmail first to verify | Wrong email or App Password |
+| POST | `/sync/{userId}` | Path only. Returns a summary, e.g. `Checked 3 emails: 1 applications added, 1 applications updated` | User not found, Gmail not connected, Gmail cannot be read |
+| GET | `/status/{userId}` | Path only. Returns `{ connected, gmailAddress, lastSyncedAt }`. The App Password is never returned | User not found |
+
+**How the sync works**
+1. Runs automatically every day at **23:59 (Asia/Riyadh)** for all connected users, or on demand with `/sync`.
+2. Reads up to the **20 newest emails** received since the last sync (inbox is opened read only).
+3. Gemini classifies each email: `Applied`, `Interview`, `InProgress`, `Offered`, `Rejected` or not job related.
+4. `Applied` adds a new application, unless an active one already exists for the same title at that company.
+5. `Interview` moves the application to `InProgress` and adds an interview (`SCHEDULED` if a date was found, otherwise `PENDING`).
+6. `InProgress`, `Offered` and `Rejected` update the matching application.
+7. Emails for companies with no application are ignored. One failing email does not stop the others.
+8. A WhatsApp message is sent when a status changes (if the user has a phone number in the profile).
+
+### Applications page `/applications?userId=`
+- Stats cards per status and a list of application cards with company logos
+- Filters by status, date range and company history
+- Add application form and delete with confirmation
+- Details drawer: change status, interviews list, schedule an interview (uses `POST /api/v1/interviews/add` and moves the application to `InProgress`), AI next step and AI reply drafts with a copy button
+- AI insights panel
+- Gmail card: connection status, step by step App Password guide, connect form and a "Check now" button
