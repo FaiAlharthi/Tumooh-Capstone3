@@ -59,6 +59,15 @@ window.TumoohApi = (function () {
         return parseResponse(response);
     }
 
+    async function apiPut(path, body) {
+        const response = await fetch(API_PREFIX + path, {
+            method: 'PUT',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify(body)
+        });
+        return parseResponse(response);
+    }
+
     // multipart/form-data upload (no JSON content-type header)
     async function apiPostForm(path, formData) {
         const response = await fetch(API_PREFIX + path, {
@@ -72,6 +81,7 @@ window.TumoohApi = (function () {
         get: apiGet,
         post: apiPost,
         postForm: apiPostForm,
+        put: apiPut,
         patch: apiPatch
     };
 })();
