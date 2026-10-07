@@ -60,4 +60,10 @@ public class ProfileController {
         return ResponseEntity.ok(updatedProfile);
     }
 
+    @PostMapping(value = "/user/{userId}/upload-image", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
+    public ResponseEntity<ProfileResponse> uploadImage(@PathVariable Long userId, @RequestParam("file") MultipartFile file) {
+        ProfileResponse updatedProfile = profileService.uploadImage(userId, file);
+        return ResponseEntity.ok(updatedProfile);
+    }
+
 }

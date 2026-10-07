@@ -108,6 +108,18 @@ public class ProfileService {
         return mapToResponseDto(updatedProfile);
     }
 
+    @Transactional
+    public ProfileResponse uploadImage(Long userId, MultipartFile file) {
+        Profile profile = profileRepository.findById(userId)
+                .orElseThrow(() -> new ApiException("Profile not found for user id: " + userId));
+
+        String fileUrl = fileStorageService.saveImageFile(file);
+        profile.setProfileImage(fileUrl);
+
+        Profile updatedProfile = profileRepository.save(profile);
+        return mapToResponseDto(updatedProfile);
+    }
+
     private ProfileResponse mapToResponseDto(Profile profile) {
         return ProfileResponse.builder()
                 .userId(profile.getUser() != null ? profile.getUser().getId() : profile.getId())
