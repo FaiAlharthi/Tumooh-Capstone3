@@ -49,7 +49,7 @@ public class GmailSyncService {
         }
     }
 
-    //this is for manual endpoint >> just to try the endpoint anytime
+    //this is for manual endpoint>> just to try the endpoint anytime
     public String syncUser(Long userId) {
         User user = userRepository.findUserById(userId);
         if (user == null) {

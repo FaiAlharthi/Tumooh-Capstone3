@@ -28,4 +28,9 @@ public class GmailController {
     public ResponseEntity<?> syncGmail(@PathVariable Long userId) {
         return ResponseEntity.status(200).body(new ApiResponse(gmailSyncService.syncUser(userId)));
     }
+
+    @GetMapping("/status/{userId}")
+    public ResponseEntity<?> getGmailStatus(@PathVariable Long userId) {
+        return ResponseEntity.status(200).body(gmailConnectionService.getGmailStatus(userId));
+    }
 }

@@ -67,18 +67,35 @@ public class JobApplicationService {
         jobApplicationRepository.save(old);
     }
 
-    public void deleteJobApplication(Long id) {
-        JobApplication jobApplication = jobApplicationRepository.findJobApplicationById(id);
-        if (jobApplication == null) {
+
+    public void deleteJobApplication(Long userId, Long applicationId) {
+        User user = userRepository.findUserById(userId);
+        if (user == null) {
+            throw new ApiException("User not found");
+        }
+        JobApplication application = jobApplicationRepository.findJobApplicationById(applicationId);
+        if (application == null) {
             throw new ApiException("Job application not found");
         }
-        jobApplicationRepository.delete(jobApplication);
+        if (!application.getUser().getId().equals(userId)) {
+            throw new ApiException("This application does not belong to you");
+        }
+        jobApplicationRepository.delete(application);
     }
 
     //End of CRUD endpoints
 
 
-    //in case of updating the status of the application was manually done by the seeker
+    public List<JobApplication> getMyApplications(Long userId) {
+        User user = userRepository.findUserById(userId);
+        if (user == null) {
+            throw new ApiException("User not found");
+        }
+        return jobApplicationRepository.findJobApplicationsByUser(user);
+    }
+
+
+    //in case of adding the application was manually done by the seeker
     public void addManualApplication(Long userId, ManualApplicationRequest application) {
         User user = userRepository.findUserById(userId);
         if (user == null) {
@@ -122,6 +139,7 @@ public class JobApplicationService {
         jobApplicationRepository.save(jobApplication);
     }
 
+    //in case of updating the status of the application was manually done by the seeker
     public void updateApplicationStatus(Long userId, Long applicationId, ApplicationStatusRequest statusDto) {
         JobApplication jobApplication = jobApplicationRepository.findJobApplicationById(applicationId);
         if (jobApplication == null) {
@@ -133,9 +151,6 @@ public class JobApplicationService {
         jobApplication.setStatus(statusDto.getStatus());
         jobApplicationRepository.save(jobApplication);
     }
-
-    //in case of updating the status was from the Gmail
-
 
     //get all user applications by status
     public List<JobApplication> getApplicationsByStatus(Long userId, ApplicationStatusRequest status) {
