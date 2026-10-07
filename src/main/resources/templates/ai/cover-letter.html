@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head th:replace="~{fragments/layout :: head('Cover letter — AI applicant tools')}"></head>
+<body class="min-h-screen bg-tumooh-light text-tumooh-navy font-sans antialiased flex flex-col">
+<header th:replace="~{fragments/layout :: mainNav(active='ai-tools')}"></header>
+
+<main class="flex-1 max-w-3xl mx-auto w-full px-4 sm:px-6 py-10 space-y-8">
+    <div>
+        <a th:href="@{/ai-tools}" class="text-sm text-tumooh-navy/60 hover:text-tumooh-accent transition-colors">&larr; AI applicant tools</a>
+        <h1 class="mt-2 text-2xl font-bold">Cover letter</h1>
+        <p class="mt-2 text-tumooh-navy/70">Describe the job and yourself, and get a tailored cover letter you can send.</p>
+    </div>
+
+    <div class="rounded-2xl bg-white p-6 sm:p-8 shadow-soft border border-tumooh-navy/5">
+        <form id="ai-form" class="space-y-5" data-endpoint="/ai/cover-letter">
+            <div>
+                <label for="jobTitle" class="block text-sm font-medium mb-2">Target job title *</label>
+                <input id="jobTitle" name="jobTitle" type="text" maxlength="100" required
+                       placeholder="e.g. Frontend Developer"
+                       class="w-full rounded-2xl border border-tumooh-navy/15 px-4 py-3 focus:outline-none focus:ring-2 focus:ring-tumooh-accent focus:border-transparent transition-shadow"/>
+            </div>
+
+            <div>
+                <label for="targetCompany" class="block text-sm font-medium mb-2">Company</label>
+                <input id="targetCompany" name="targetCompany" type="text" maxlength="500"
+                       placeholder="e.g. Acme Corp"
+                       class="w-full rounded-2xl border border-tumooh-navy/15 px-4 py-3 focus:outline-none focus:ring-2 focus:ring-tumooh-accent focus:border-transparent transition-shadow"/>
+            </div>
+
+            <div>
+                <label for="candidateName" class="block text-sm font-medium mb-2">Your name *</label>
+                <input id="candidateName" name="candidateName" type="text" maxlength="200" required
+                       placeholder="e.g. Sara Ahmed"
+                       class="w-full rounded-2xl border border-tumooh-navy/15 px-4 py-3 focus:outline-none focus:ring-2 focus:ring-tumooh-accent focus:border-transparent transition-shadow"/>
+            </div>
+
+            <div>
+                <label for="candidateSummary" class="block text-sm font-medium mb-2">A few lines about you</label>
+                <textarea id="candidateSummary" name="candidateSummary" rows="4" maxlength="3000"
+                          placeholder="Experience, skills, achievements…"
+                          class="w-full rounded-2xl border border-tumooh-navy/15 px-4 py-3 focus:outline-none focus:ring-2 focus:ring-tumooh-accent focus:border-transparent transition-shadow"></textarea>
+            </div>
+
+            <div>
+                <label for="jobDescription" class="block text-sm font-medium mb-2">Job description</label>
+                <textarea id="jobDescription" name="jobDescription" rows="5" maxlength="5000"
+                          placeholder="Paste the posting here so the letter can match it"
+                          class="w-full rounded-2xl border border-tumooh-navy/15 px-4 py-3 focus:outline-none focus:ring-2 focus:ring-tumooh-accent focus:border-transparent transition-shadow"></textarea>
+            </div>
+
+            <div>
+                <label for="tone" class="block text-sm font-medium mb-2">Tone</label>
+                <select id="tone" name="tone"
+                        class="w-full rounded-2xl border border-tumooh-navy/15 px-4 py-3 bg-white focus:outline-none focus:ring-2 focus:ring-tumooh-accent focus:border-transparent transition-shadow">
+                    <option value="">Default</option>
+                    <option value="Professional">Professional</option>
+                    <option value="Confident">Confident</option>
+                    <option value="Friendly">Friendly</option>
+                    <option value="Formal">Formal</option>
+                    <option value="Enthusiastic">Enthusiastic</option>
+                </select>
+            </div>
+
+            <p id="ai-error" class="hidden text-sm text-red-600" role="alert"></p>
+
+            <button type="submit" id="ai-submit"
+                    class="w-full rounded-2xl bg-tumooh-accent py-3.5 font-semibold text-white shadow-soft hover:brightness-105 transition-all focus:outline-none focus:ring-2 focus:ring-tumooh-accent focus:ring-offset-2">
+                Generate cover letter
+            </button>
+        </form>
+    </div>
+
+    <div id="ai-loading" class="hidden rounded-2xl bg-white p-5 shadow-soft border border-tumooh-navy/5 flex items-center gap-3 text-sm text-tumooh-navy/70">
+        <span class="inline-block h-4 w-4 rounded-full border-2 border-tumooh-navy/20 border-t-tumooh-accent animate-spin" aria-hidden="true"></span>
+        <span>Writing your letter — this can take up to a minute…</span>
+    </div>
+
+    <div id="ai-result" class="hidden space-y-4" aria-live="polite"></div>
+</main>
+
+<script>window.TUMOOH_AI = { tool: 'coverLetter' };</script>
+<script th:src="@{/js/tumooh-api.js}"></script>
+<script th:src="@{/js/ai-tools.js}"></script>
+</body>
+</html>
