@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head th:replace="~{fragments/layout :: head('CV revise — AI applicant tools')}"></head>
+<body class="min-h-screen bg-tumooh-light text-tumooh-navy font-sans antialiased flex flex-col">
+<header th:replace="~{fragments/layout :: mainNav(active='ai-tools')}"></header>
+
+<main class="flex-1 max-w-3xl mx-auto w-full px-4 sm:px-6 py-10 space-y-8">
+    <div>
+        <a th:href="@{/ai-tools}" class="text-sm text-tumooh-navy/60 hover:text-tumooh-accent transition-colors">&larr; AI applicant tools</a>
+        <h1 class="mt-2 text-2xl font-bold">CV revise</h1>
+        <p class="mt-2 text-tumooh-navy/70">Upload your CV as a PDF and get an ATS score, a rewritten summary, and stronger bullet points.</p>
+    </div>
+
+    <div class="rounded-2xl bg-white p-6 sm:p-8 shadow-soft border border-tumooh-navy/5">
+        <form id="ai-form" class="space-y-5" data-endpoint="/ai/cv/revise">
+            <div>
+                <label for="file" class="block text-sm font-medium mb-2">CV file (PDF) *</label>
+                <input id="file" name="file" type="file" accept="application/pdf" required
+                       class="w-full text-sm text-tumooh-navy/70 file:mr-4 file:rounded-2xl file:border-0 file:bg-tumooh-accent/10 file:px-4 file:py-2.5 file:font-semibold file:text-tumooh-accent hover:file:bg-tumooh-accent/20 cursor-pointer rounded-2xl border border-tumooh-navy/15 px-4 py-3"/>
+                <p class="mt-2 text-xs text-tumooh-navy/50">PDF only. Text-based CVs work best — scanned images may score poorly.</p>
+            </div>
+
+            <p id="ai-error" class="hidden text-sm text-red-600" role="alert"></p>
+
+            <button type="submit" id="ai-submit"
+                    class="w-full rounded-2xl bg-tumooh-accent py-3.5 font-semibold text-white shadow-soft hover:brightness-105 transition-all focus:outline-none focus:ring-2 focus:ring-tumooh-accent focus:ring-offset-2">
+                Audit and revise my CV
+            </button>
+        </form>
+    </div>
+
+    <div id="ai-loading" class="hidden rounded-2xl bg-white p-5 shadow-soft border border-tumooh-navy/5 flex items-center gap-3 text-sm text-tumooh-navy/70">
+        <span class="inline-block h-4 w-4 rounded-full border-2 border-tumooh-navy/20 border-t-tumooh-accent animate-spin" aria-hidden="true"></span>
+        <span>Reading your CV and running the ATS audit — this can take up to a minute…</span>
+    </div>
+
+    <div id="ai-result" class="hidden space-y-4" aria-live="polite"></div>
+</main>
+
+<script>window.TUMOOH_AI = { tool: 'cvRevise' };</script>
+<script th:src="@{/js/tumooh-api.js}"></script>
+<script th:src="@{/js/ai-tools.js}"></script>
+</body>
+</html>

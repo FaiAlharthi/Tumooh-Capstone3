@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head th:replace="~{fragments/layout :: head('STAR answer — AI applicant tools')}"></head>
+<body class="min-h-screen bg-tumooh-light text-tumooh-navy font-sans antialiased flex flex-col">
+<header th:replace="~{fragments/layout :: mainNav(active='ai-tools')}"></header>
+
+<main class="flex-1 max-w-3xl mx-auto w-full px-4 sm:px-6 py-10 space-y-8">
+    <div>
+        <a th:href="@{/ai-tools}" class="text-sm text-tumooh-navy/60 hover:text-tumooh-accent transition-colors">&larr; AI applicant tools</a>
+        <h1 class="mt-2 text-2xl font-bold">STAR answer</h1>
+        <p class="mt-2 text-tumooh-navy/70">Drop in an interview question and your rough story — get a structured Situation, Task, Action, Result answer.</p>
+    </div>
+
+    <div class="rounded-2xl bg-white p-6 sm:p-8 shadow-soft border border-tumooh-navy/5">
+        <form id="ai-form" class="space-y-5" data-endpoint="/ai/star-answer">
+            <div>
+                <label for="question" class="block text-sm font-medium mb-2">Interview question *</label>
+                <textarea id="question" name="question" rows="2" maxlength="1000" required
+                          placeholder="e.g. Tell me about a time you handled a tight deadline"
+                          class="w-full rounded-2xl border border-tumooh-navy/15 px-4 py-3 focus:outline-none focus:ring-2 focus:ring-tumooh-accent focus:border-transparent transition-shadow"></textarea>
+            </div>
+
+            <div>
+                <label for="rawStory" class="block text-sm font-medium mb-2">Your story (rough notes are fine) *</label>
+                <textarea id="rawStory" name="rawStory" rows="6" maxlength="4000" required
+                          placeholder="Everything that happened, in your own words — order does not matter"
+                          class="w-full rounded-2xl border border-tumooh-navy/15 px-4 py-3 focus:outline-none focus:ring-2 focus:ring-tumooh-accent focus:border-transparent transition-shadow"></textarea>
+            </div>
+
+            <div>
+                <label for="targetRole" class="block text-sm font-medium mb-2">Target role</label>
+                <input id="targetRole" name="targetRole" type="text" maxlength="100"
+                       placeholder="e.g. Project Coordinator"
+                       class="w-full rounded-2xl border border-tumooh-navy/15 px-4 py-3 focus:outline-none focus:ring-2 focus:ring-tumooh-accent focus:border-transparent transition-shadow"/>
+            </div>
+
+            <div>
+                <label for="tone" class="block text-sm font-medium mb-2">Tone</label>
+                <select id="tone" name="tone"
+                        class="w-full rounded-2xl border border-tumooh-navy/15 px-4 py-3 bg-white focus:outline-none focus:ring-2 focus:ring-tumooh-accent focus:border-transparent transition-shadow">
+                    <option value="">Default</option>
+                    <option value="Professional">Professional</option>
+                    <option value="Confident">Confident</option>
+                    <option value="Friendly">Friendly</option>
+                    <option value="Formal">Formal</option>
+                    <option value="Concise">Concise</option>
+                </select>
+            </div>
+
+            <p id="ai-error" class="hidden text-sm text-red-600" role="alert"></p>
+
+            <button type="submit" id="ai-submit"
+                    class="w-full rounded-2xl bg-tumooh-accent py-3.5 font-semibold text-white shadow-soft hover:brightness-105 transition-all focus:outline-none focus:ring-2 focus:ring-tumooh-accent focus:ring-offset-2">
+                Build my STAR answer
+            </button>
+        </form>
+    </div>
+
+    <div id="ai-loading" class="hidden rounded-2xl bg-white p-5 shadow-soft border border-tumooh-navy/5 flex items-center gap-3 text-sm text-tumooh-navy/70">
+        <span class="inline-block h-4 w-4 rounded-full border-2 border-tumooh-navy/20 border-t-tumooh-accent animate-spin" aria-hidden="true"></span>
+        <span>Structuring your answer — this can take up to a minute…</span>
+    </div>
+
+    <div id="ai-result" class="hidden space-y-4" aria-live="polite"></div>
+</main>
+
+<script>window.TUMOOH_AI = { tool: 'starAnswer' };</script>
+<script th:src="@{/js/tumooh-api.js}"></script>
+<script th:src="@{/js/ai-tools.js}"></script>
+</body>
+</html>
