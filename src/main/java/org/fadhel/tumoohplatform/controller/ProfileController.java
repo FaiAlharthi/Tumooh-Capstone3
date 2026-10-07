@@ -22,9 +22,7 @@ public class ProfileController {
     private final ProfileService profileService;
 
     @PostMapping("/user/{userId}")
-    public ResponseEntity<ProfileResponse> createProfile(
-            @PathVariable Long userId,
-            @Valid @RequestBody ProfileRequest requestDto) {
+    public ResponseEntity<ProfileResponse> createProfile(@PathVariable Long userId, @Valid @RequestBody ProfileRequest requestDto) {
         ProfileResponse createdProfile = profileService.createProfile(userId, requestDto);
         return ResponseEntity.status(HttpStatus.CREATED).body(createdProfile);
     }
@@ -56,9 +54,7 @@ public class ProfileController {
     }
 
     @PostMapping(value = "/user/{userId}/upload-cv", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
-    public ResponseEntity<ProfileResponse> uploadCv(
-            @PathVariable Long userId,
-            @RequestParam("file") MultipartFile file) {
+    public ResponseEntity<ProfileResponse> uploadCv(@PathVariable Long userId, @RequestParam("file") MultipartFile file) {
 
         ProfileResponse updatedProfile = profileService.uploadCv(userId, file);
         return ResponseEntity.ok(updatedProfile);
