@@ -19,6 +19,27 @@
     const titleEl = document.getElementById('profile-create-title');
     const subtitleEl = document.getElementById('profile-create-subtitle');
 
+    const photoField = document.getElementById('profile-photo-field');
+    const photoPreview = document.getElementById('profile-photo-preview');
+    const photoAddBtn = document.getElementById('profile-photo-add');
+    const photoRemoveBtn = document.getElementById('profile-photo-remove');
+    const photoFileInput = document.getElementById('profile-photo-file');
+    const photoValueInput = document.getElementById('profile-photo-value');
+    const photoHint = document.getElementById('profile-photo-hint');
+    const photoError = document.getElementById('profile-photo-error');
+
+    const cvField = document.getElementById('profile-cv-field');
+    const cvName = document.getElementById('profile-cv-name');
+    const cvAddBtn = document.getElementById('profile-cv-add');
+    const cvViewLink = document.getElementById('profile-cv-view');
+    const cvRemoveBtn = document.getElementById('profile-cv-remove');
+    const cvFileInput = document.getElementById('profile-cv-file');
+    const cvValueInput = document.getElementById('profile-cv-value');
+    const cvHint = document.getElementById('profile-cv-hint');
+    const cvError = document.getElementById('profile-cv-error');
+
+    const uploadsHint = document.getElementById('profile-uploads-hint');
+
     if (!userId || !form || !viewEl || !createEl) {
         return;
     }
@@ -242,6 +263,9 @@
         if (cancelBtn) {
             cancelBtn.classList.add('hidden');
         }
+        // Uploads need an existing profile (the endpoints 400 otherwise)
+        setUploadsVisibility(false);
+        clearUploadErrors();
         viewEl.classList.add('hidden');
         createEl.classList.remove('hidden');
     }
@@ -261,6 +285,9 @@
         clearError();
         clearFormError();
         fillForm(currentProfile);
+        setUploadsVisibility(true);
+        clearUploadErrors();
+        refreshUploadWidgets();
         setFormHeading('Edit profile', 'Make your changes and save.');
         if (cancelBtn) {
             cancelBtn.classList.remove('hidden');
@@ -282,6 +309,201 @@
             showCreateForm();
         }
     }
+
+    /* ------------------------------------------------------------------ *
+     * Photo / CV uploads — edit mode only, uploaded immediately
+     * ------------------------------------------------------------------ */
+
+    const PHOTO_TYPES = ['image/jpeg', 'image/png', 'image/webp', 'image/gif'];
+    const MAX_PHOTO_BYTES = 5 * 1024 * 1024;
+    const MAX_CV_BYTES = 10 * 1024 * 1024;
+
+    function setUploadsVisibility(canUpload) {
+        if (photoField) {
+            photoField.classList.toggle('hidden', !canUpload);
+        }
+        if (cvField) {
+            cvField.classList.toggle('hidden', !canUpload);
+        }
+        if (uploadsHint) {
+            uploadsHint.classList.toggle('hidden', canUpload);
+        }
+    }
+
+    function showUploadError(kind, message) {
+        const el = kind === 'photo' ? photoError : cvError;
+        if (el) {
+            el.textContent = friendly(message);
+            el.classList.remove('hidden');
+        }
+    }
+
+    function clearUploadErrors() {
+        [photoError, cvError].forEach(function (el) {
+            if (el) {
+                el.textContent = '';
+                el.classList.add('hidden');
+            }
+        });
+    }
+
+    function fileNameFromUrl(url) {
+        const last = String(url).split('/').pop() || '';
+        try {
+            return decodeURIComponent(last);
+        } catch (err) {
+            return last;
+        }
+    }
+
+    // Hidden inputs are the source of truth for what will be saved
+    function refreshUploadWidgets() {
+        const photo = photoValueInput ? photoValueInput.value.trim() : '';
+        const cv = cvValueInput ? cvValueInput.value.trim() : '';
+
+        if (photoPreview) {
+            if (photo) {
+                photoPreview.innerHTML = '<img src="' + esc(normalizeUrl(photo)) + '" alt="" ' +
+                    'class="h-full w-full object-cover" onerror="this.remove()"/>';
+                photoPreview.classList.remove('hidden');
+            } else {
+                photoPreview.innerHTML = '';
+                photoPreview.classList.add('hidden');
+            }
+        }
+        if (photoAddBtn) {
+            photoAddBtn.textContent = photo ? 'Change' : 'Add photo';
+        }
+        if (photoRemoveBtn) {
+            photoRemoveBtn.classList.toggle('hidden', !photo);
+        }
+
+        if (cvName) {
+            cvName.textContent = cv ? fileNameFromUrl(cv) : 'No CV yet';
+        }
+        if (cvAddBtn) {
+            cvAddBtn.textContent = cv ? 'Change' : 'Add CV';
+        }
+        if (cvViewLink) {
+            if (cv) {
+                cvViewLink.href = normalizeUrl(cv);
+                cvViewLink.classList.remove('hidden');
+            } else {
+                cvViewLink.classList.add('hidden');
+            }
+        }
+        if (cvRemoveBtn) {
+            cvRemoveBtn.classList.toggle('hidden', !cv);
+        }
+    }
+
+    function setUploading(kind, busy) {
+        const add = kind === 'photo' ? photoAddBtn : cvAddBtn;
+        const remove = kind === 'photo' ? photoRemoveBtn : cvRemoveBtn;
+        [add, remove].forEach(function (btn) {
+            if (btn) {
+                btn.disabled = busy;
+                btn.classList.toggle('opacity-60', busy);
+            }
+        });
+    }
+
+    function uploadSelected(kind) {
+        const input = kind === 'photo' ? photoFileInput : cvFileInput;
+        if (!input || !input.files || !input.files.length) {
+            return;
+        }
+        const file = input.files[0];
+        clearUploadErrors();
+
+        if (kind === 'photo') {
+            if (PHOTO_TYPES.indexOf(file.type) === -1) {
+                showUploadError('photo', 'Please choose a JPG, PNG, WebP or GIF image.');
+                input.value = '';
+                return;
+            }
+            if (file.size > MAX_PHOTO_BYTES) {
+                showUploadError('photo', 'Image must be 5 MB or smaller.');
+                input.value = '';
+                return;
+            }
+        } else {
+            const isPdf = file.type === 'application/pdf' || /\.pdf$/i.test(file.name);
+            if (!isPdf) {
+                showUploadError('cv', 'Please choose a PDF file.');
+                input.value = '';
+                return;
+            }
+            if (file.size > MAX_CV_BYTES) {
+                showUploadError('cv', 'CV must be 10 MB or smaller.');
+                input.value = '';
+                return;
+            }
+        }
+
+        const hint = kind === 'photo' ? photoHint : cvHint;
+        const originalHint = hint ? hint.textContent : '';
+        setUploading(kind, true);
+        if (hint) {
+            hint.textContent = 'Uploading…';
+        }
+
+        const formData = new FormData();
+        formData.append('file', file);
+        const endpoint = '/profiles/user/' + userId + (kind === 'photo' ? '/upload-image' : '/upload-cv');
+
+        window.TumoohApi.postForm(endpoint, formData).then(function (saved) {
+            if (saved) {
+                currentProfile = saved;
+                const target = kind === 'photo' ? photoValueInput : cvValueInput;
+                if (target) {
+                    target.value = saved[kind === 'photo' ? 'profileImage' : 'cvUrl'] || '';
+                }
+            }
+            refreshUploadWidgets();
+        }).catch(function (err) {
+            showUploadError(kind, err && err.message ? err.message : '');
+        }).finally(function () {
+            input.value = '';
+            if (hint) {
+                hint.textContent = originalHint;
+            }
+            setUploading(kind, false);
+        });
+    }
+
+    function wireUploads() {
+        if (photoAddBtn && photoFileInput) {
+            photoAddBtn.addEventListener('click', function () { photoFileInput.click(); });
+        }
+        if (cvAddBtn && cvFileInput) {
+            cvAddBtn.addEventListener('click', function () { cvFileInput.click(); });
+        }
+        if (photoFileInput) {
+            photoFileInput.addEventListener('change', function () { uploadSelected('photo'); });
+        }
+        if (cvFileInput) {
+            cvFileInput.addEventListener('change', function () { uploadSelected('cv'); });
+        }
+        if (photoRemoveBtn) {
+            photoRemoveBtn.addEventListener('click', function () {
+                if (photoValueInput) {
+                    photoValueInput.value = '';
+                }
+                refreshUploadWidgets();
+            });
+        }
+        if (cvRemoveBtn) {
+            cvRemoveBtn.addEventListener('click', function () {
+                if (cvValueInput) {
+                    cvValueInput.value = '';
+                }
+                refreshUploadWidgets();
+            });
+        }
+    }
+
+    wireUploads();
 
     // The view card is re-rendered as HTML, so listen by delegation
     viewEl.addEventListener('click', function (event) {
@@ -352,6 +574,17 @@
                 payload[field.name] = value;
             }
         });
+        // The photo/CV hidden inputs are the source of truth in edit mode:
+        // always send them, even when empty, so a Remove actually clears
+        // the stored value server-side.
+        if (mode === 'edit') {
+            if (photoValueInput) {
+                payload.profileImage = photoValueInput.value.trim();
+            }
+            if (cvValueInput) {
+                payload.cvUrl = cvValueInput.value.trim();
+            }
+        }
         return payload;
     }
 

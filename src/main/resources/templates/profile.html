@@ -85,19 +85,50 @@
                 </div>
             </div>
 
-            <div class="grid sm:grid-cols-2 gap-5">
-                <div>
-                    <label for="cvUrl" class="block text-sm font-medium mb-2">CV URL</label>
-                    <input id="cvUrl" name="cvUrl" type="text" maxlength="255"
-                           placeholder="/uploads/cvs/my-cv.pdf"
-                           class="w-full rounded-2xl border border-tumooh-navy/15 px-4 py-3 focus:outline-none focus:ring-2 focus:ring-tumooh-accent focus:border-transparent transition-shadow"/>
+            <div id="profile-uploads" class="grid sm:grid-cols-2 gap-5">
+                <div id="profile-photo-field">
+                    <span class="block text-sm font-medium mb-2">Profile photo</span>
+                    <div class="flex items-center gap-3">
+                        <span id="profile-photo-preview" class="hidden h-12 w-12 shrink-0 rounded-full bg-tumooh-navy/5 border border-tumooh-navy/10 overflow-hidden"></span>
+                        <button type="button" id="profile-photo-add"
+                                class="rounded-2xl border border-tumooh-navy/15 px-4 py-2.5 text-sm font-medium text-tumooh-navy/80 hover:border-tumooh-accent hover:text-tumooh-accent transition-colors">
+                            Add photo
+                        </button>
+                        <button type="button" id="profile-photo-remove"
+                                class="hidden rounded-2xl border border-red-200 px-3 py-2.5 text-sm font-medium text-red-600 hover:bg-red-50 transition-colors">
+                            Remove
+                        </button>
+                    </div>
+                    <input type="file" id="profile-photo-file" accept="image/jpeg,image/png,image/webp,image/gif" class="hidden"/>
+                    <input type="hidden" id="profile-photo-value" name="profileImage" value=""/>
+                    <p id="profile-photo-hint" class="mt-2 text-xs text-tumooh-navy/50">JPG, PNG, WebP or GIF · up to 5 MB</p>
+                    <p id="profile-photo-error" class="hidden mt-2 text-xs text-red-600" role="alert"></p>
                 </div>
-                <div>
-                    <label for="profileImage" class="block text-sm font-medium mb-2">Profile image URL</label>
-                    <input id="profileImage" name="profileImage" type="text" maxlength="255"
-                           placeholder="/images/me.jpg"
-                           class="w-full rounded-2xl border border-tumooh-navy/15 px-4 py-3 focus:outline-none focus:ring-2 focus:ring-tumooh-accent focus:border-transparent transition-shadow"/>
+
+                <div id="profile-cv-field">
+                    <span class="block text-sm font-medium mb-2">CV</span>
+                    <div class="flex items-center gap-3">
+                        <span id="profile-cv-name" class="text-sm text-tumooh-navy/60 truncate max-w-[9rem]">No CV yet</span>
+                        <button type="button" id="profile-cv-add"
+                                class="rounded-2xl border border-tumooh-navy/15 px-4 py-2.5 text-sm font-medium text-tumooh-navy/80 hover:border-tumooh-accent hover:text-tumooh-accent transition-colors">
+                            Add CV
+                        </button>
+                        <a id="profile-cv-view" href="#" target="_blank" rel="noopener noreferrer"
+                           class="hidden rounded-2xl border border-tumooh-navy/15 px-3 py-2.5 text-sm font-medium text-tumooh-navy/80 hover:border-tumooh-accent hover:text-tumooh-accent transition-colors">View</a>
+                        <button type="button" id="profile-cv-remove"
+                                class="hidden rounded-2xl border border-red-200 px-3 py-2.5 text-sm font-medium text-red-600 hover:bg-red-50 transition-colors">
+                            Remove
+                        </button>
+                    </div>
+                    <input type="file" id="profile-cv-file" accept=".pdf,application/pdf" class="hidden"/>
+                    <input type="hidden" id="profile-cv-value" name="cvUrl" value=""/>
+                    <p id="profile-cv-hint" class="mt-2 text-xs text-tumooh-navy/50">PDF · up to 10 MB</p>
+                    <p id="profile-cv-error" class="hidden mt-2 text-xs text-red-600" role="alert"></p>
                 </div>
+
+                <p id="profile-uploads-hint" class="hidden sm:col-span-2 text-xs text-tumooh-navy/50">
+                    Save your profile first, then add a photo and CV.
+                </p>
             </div>
 
             <p id="profile-form-error" class="hidden text-sm text-red-600" role="alert"></p>
