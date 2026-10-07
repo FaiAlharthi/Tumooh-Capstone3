@@ -48,8 +48,27 @@
                th:class="${active == 'ai-tools'} ? 'text-tumooh-accent' : 'text-tumooh-navy/70 hover:text-tumooh-accent transition-colors'"
                th:attr="aria-current=${active == 'ai-tools'} ? 'page' : null">AI<span class="hidden sm:inline"> applicant</span> tools</a>
         </nav>
-        <div aria-hidden="true"></div>
+        <div class="relative justify-self-end">
+            <button type="button" id="nav-profile-toggle" aria-haspopup="menu" aria-controls="nav-profile-menu" aria-expanded="false"
+                    th:class="'flex items-center gap-1.5 text-sm sm:text-base font-medium transition-colors ' + (${active == 'profile'} ? 'text-tumooh-accent' : 'text-tumooh-navy/70 hover:text-tumooh-accent')">
+                <span id="nav-profile-label">Profile</span>
+                <svg id="nav-profile-chevron" class="h-3.5 w-3.5 shrink-0 transition-transform" viewBox="0 0 20 20" fill="currentColor" aria-hidden="true">
+                    <path fill-rule="evenodd" d="M5.22 8.22a.75.75 0 0 1 1.06 0L10 11.94l3.72-3.72a.75.75 0 1 1 1.06 1.06l-4.25 4.25a.75.75 0 0 1-1.06 0L5.22 9.28a.75.75 0 0 1 0-1.06Z" clip-rule="evenodd"/>
+                </svg>
+            </button>
+
+            <div id="nav-profile-menu" role="menu"
+                 class="hidden absolute right-0 mt-2 w-64 rounded-2xl bg-white shadow-soft border border-tumooh-navy/10 p-2 z-50">
+                <div class="px-3 py-2.5 border-b border-tumooh-navy/5">
+                    <p id="nav-profile-name" class="text-sm font-semibold truncate">…</p>
+                    <p id="nav-profile-email" class="text-xs text-tumooh-navy/60 truncate"></p>
+                </div>
+                <a th:href="@{/profile}" role="menuitem" id="nav-profile-link"
+                   class="mt-1 flex items-center gap-2 rounded-xl px-3 py-2.5 text-sm font-medium text-tumooh-navy/80 hover:bg-tumooh-accent/10 hover:text-tumooh-accent transition-colors">Profile</a>
+            </div>
+        </div>
     </div>
+    <script th:src="@{/js/nav-profile.js}"></script>
 </header>
 <body th:fragment="body(content)" class="min-h-screen bg-tumooh-light text-tumooh-navy font-sans antialiased">
 <header th:replace="~{fragments/layout :: mainNav(active='home')}"></header>
