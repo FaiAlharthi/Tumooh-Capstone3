@@ -324,6 +324,8 @@
         hide($('reply-result'));
         hide($('delete-confirm'));
         show($('delete-btn'));
+        $('schedule-form').reset();
+        hide($('schedule-form'));
         updateReplySection(app.status);
 
         loadInterviews(app.id);
@@ -530,6 +532,58 @@
             toast(e.message);
         } finally {
             button.disabled = false;
+        }
+    });
+
+    // Schedule an interview
+    $('schedule-btn').addEventListener('click', function () {
+        $('schedule-form').reset();
+        hide($('schedule-error'));
+        show($('schedule-form'));
+        $('schedule-date').focus();
+    });
+
+    $('schedule-cancel').addEventListener('click', function () {
+        hide($('schedule-form'));
+    });
+
+    $('schedule-form').addEventListener('submit', async function (event) {
+        event.preventDefault();
+        if (!currentApp) return;
+        hide($('schedule-error'));
+
+        const button = $('schedule-save');
+        const applicationId = currentApp.id;
+        button.disabled = true;
+        button.textContent = 'Saving...';
+        try {
+            // 1) Create the interview (InterviewService)
+            await TumoohApi.post('/interviews/add', {
+                jobApplicationId: applicationId,
+                userId: userId,
+                interviewDate: $('schedule-date').value,
+                status: $('schedule-status').value
+            });
+
+            // 2) Move the application to In progress
+            if (currentApp.status !== 'InProgress') {
+                await apiSend('PUT', '/job-applications/update-status/' + userId + '/' + applicationId, { status: 'InProgress' });
+                currentApp.status = 'InProgress';
+                $('drawer-status').value = 'InProgress';
+                updateReplySection('InProgress');
+            }
+
+            hide($('schedule-form'));
+            toast('Interview scheduled');
+            loadInterviews(applicationId);
+            resetFiltersUI();
+            await loadApplications();
+        } catch (e) {
+            $('schedule-error').textContent = e.message;
+            show($('schedule-error'));
+        } finally {
+            button.disabled = false;
+            button.textContent = 'Save';
         }
     });
 

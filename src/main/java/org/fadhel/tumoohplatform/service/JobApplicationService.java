@@ -84,8 +84,6 @@ public class JobApplicationService {
     }
 
     //End of CRUD endpoints
-
-
     public List<JobApplication> getMyApplications(Long userId) {
         User user = userRepository.findUserById(userId);
         if (user == null) {
