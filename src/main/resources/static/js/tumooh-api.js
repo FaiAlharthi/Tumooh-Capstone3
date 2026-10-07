@@ -12,8 +12,17 @@ window.TumoohApi = (function () {
             }
         }
         if (!response.ok) {
-            const message = (data && (data.message || data.error)) ? (data.message || data.error) : (typeof data === 'string' ? data : 'Request failed');
-            throw new Error(message);
+            let message = (data && (data.message || data.error)) ? (data.message || data.error) : (typeof data === 'string' ? data : null);
+            // Validation errors come back as a { field: message } map
+            if (!message && data && typeof data === 'object' && !Array.isArray(data)) {
+                const details = Object.keys(data)
+                    .filter(function (key) { return typeof data[key] === 'string'; })
+                    .map(function (key) { return data[key]; });
+                if (details.length) {
+                    message = details.join(' ');
+                }
+            }
+            throw new Error(message || 'Request failed');
         }
         return data;
     }
@@ -50,9 +59,19 @@ window.TumoohApi = (function () {
         return parseResponse(response);
     }
 
+    // multipart/form-data upload (no JSON content-type header)
+    async function apiPostForm(path, formData) {
+        const response = await fetch(API_PREFIX + path, {
+            method: 'POST',
+            body: formData
+        });
+        return parseResponse(response);
+    }
+
     return {
         get: apiGet,
         post: apiPost,
+        postForm: apiPostForm,
         patch: apiPatch
     };
 })();

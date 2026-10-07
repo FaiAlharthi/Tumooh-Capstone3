@@ -37,13 +37,16 @@
         <a th:href="@{/}" class="justify-self-start flex items-center transition-opacity hover:opacity-90">
             <img th:src="@{/logo/Tumooh-logo.png}" alt="Tumooh" class="h-14 sm:h-16 md:h-[4.25rem] w-auto max-w-[min(100%,11rem)]"/>
         </a>
-        <nav class="flex items-center justify-center gap-8 sm:gap-10 text-sm sm:text-base font-medium whitespace-nowrap" aria-label="Main">
+        <nav class="flex items-center justify-center gap-4 sm:gap-8 md:gap-10 text-sm sm:text-base font-medium whitespace-nowrap" aria-label="Main">
             <a th:href="@{/}"
                th:class="${active == 'home'} ? 'text-tumooh-accent' : 'text-tumooh-navy/70 hover:text-tumooh-accent transition-colors'"
                th:attr="aria-current=${active == 'home'} ? 'page' : null">Home</a>
             <a th:href="@{/career}"
                th:class="${active == 'career'} ? 'text-tumooh-accent' : 'text-tumooh-navy/70 hover:text-tumooh-accent transition-colors'"
                th:attr="aria-current=${active == 'career'} ? 'page' : null">Career hub</a>
+            <a th:href="@{/ai-tools}"
+               th:class="${active == 'ai-tools'} ? 'text-tumooh-accent' : 'text-tumooh-navy/70 hover:text-tumooh-accent transition-colors'"
+               th:attr="aria-current=${active == 'ai-tools'} ? 'page' : null">AI<span class="hidden sm:inline"> applicant</span> tools</a>
         </nav>
         <div aria-hidden="true"></div>
     </div>
