@@ -1,0 +1,32 @@
+{
+  "software engineer": [
+    "Tell me about yourself.",
+    "What is Spring Boot and why do teams use it?",
+    "What is the difference between a Spring Boot controller and a service class?"
+  ],
+  "software engineer intern": [
+    "Tell me about yourself and your interest in software development.",
+    "What is Spring Boot in your own words?",
+    "Have you built a REST API with Spring Boot? Briefly describe what you did."
+  ],
+  "backend developer": [
+    "Tell me about yourself.",
+    "What is Spring Boot and why do teams use it?",
+    "How do you connect a Spring Boot application to a database?"
+  ],
+  "full stack developer": [
+    "Tell me about yourself.",
+    "What is Spring Boot and how does it fit in a full stack project?",
+    "Explain what happens when a client sends a GET request to a Spring Boot REST endpoint."
+  ],
+  "spring boot": [
+    "Tell me about yourself.",
+    "What is Spring Boot and why do teams use it?",
+    "What is dependency injection in Spring Boot?"
+  ],
+  "_default": [
+    "Tell me about yourself.",
+    "What is Spring Boot and why do teams use it?",
+    "Name one Spring Boot annotation you have used and what it does."
+  ]
+}

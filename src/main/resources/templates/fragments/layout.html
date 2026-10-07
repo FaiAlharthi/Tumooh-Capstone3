@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head th:fragment="head(title)">
+    <meta charset="UTF-8"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+    <title th:text="${title} ?: 'Tumooh'">Tumooh</title>
+    <link rel="icon" type="image/svg+xml" th:href="@{/images/favicon.svg}"/>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        tumooh: {
+                            navy: '#0B2545',
+                            accent: '#00B4A6',
+                            light: '#F4F8F7',
+                        }
+                    },
+                    fontFamily: {
+                        sans: ['Inter', 'system-ui', 'sans-serif'],
+                    },
+                    boxShadow: {
+                        soft: '0 4px 24px -4px rgba(11, 37, 69, 0.12)',
+                    }
+                }
+            }
+        }
+    </script>
+    <link rel="preconnect" href="https://fonts.googleapis.com"/>
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin/>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet"/>
+    <link rel="stylesheet" th:href="@{/css/tumooh.css}"/>
+</head>
+<header th:fragment="mainNav(active)" class="border-b border-tumooh-navy/10 bg-white/80 backdrop-blur-md sticky top-0 z-50">
+    <div class="max-w-6xl mx-auto px-4 sm:px-6 py-4 sm:py-5 grid grid-cols-[1fr_auto_1fr] items-center gap-2 min-h-[4.5rem] sm:min-h-[5rem]">
+        <a th:href="@{/}" class="justify-self-start flex items-center transition-opacity hover:opacity-90">
+            <img th:src="@{/logo/Tumooh-logo.png}" alt="Tumooh" class="h-14 sm:h-16 md:h-[4.25rem] w-auto max-w-[min(100%,11rem)]"/>
+        </a>
+        <nav class="flex items-center justify-center gap-8 sm:gap-10 text-sm sm:text-base font-medium whitespace-nowrap" aria-label="Main">
+            <a th:href="@{/}"
+               th:class="${active == 'home'} ? 'text-tumooh-accent' : 'text-tumooh-navy/70 hover:text-tumooh-accent transition-colors'"
+               th:attr="aria-current=${active == 'home'} ? 'page' : null">Home</a>
+            <a th:href="@{/career}"
+               th:class="${active == 'career'} ? 'text-tumooh-accent' : 'text-tumooh-navy/70 hover:text-tumooh-accent transition-colors'"
+               th:attr="aria-current=${active == 'career'} ? 'page' : null">Career hub</a>
+        </nav>
+        <div aria-hidden="true"></div>
+    </div>
+</header>
+<body th:fragment="body(content)" class="min-h-screen bg-tumooh-light text-tumooh-navy font-sans antialiased">
+<header th:replace="~{fragments/layout :: mainNav(active='home')}"></header>
+<main class="max-w-6xl mx-auto px-4 sm:px-6 py-8 sm:py-12">
+    <div th:replace="${content}">Content</div>
+</main>
+<footer class="border-t border-tumooh-navy/10 mt-auto py-8 text-center text-sm text-tumooh-navy/60">
+    <p>&copy; <span th:text="${#dates.format(#dates.createNow(), 'yyyy')}">2026</span> Tumooh — Ambition meets opportunity.</p>
+</footer>
+</body>
+</html>

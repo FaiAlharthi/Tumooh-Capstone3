@@ -1,0 +1,27 @@
+@media (prefers-reduced-motion: reduce) {
+    *, *::before, *::after {
+        animation-duration: 0.01ms !important;
+        transition-duration: 0.01ms !important;
+    }
+}
+
+/* Safari / WebKit: hide default video controls and tap-to-pause overlay */
+.tumooh-webcam {
+    pointer-events: none;
+    object-fit: cover;
+    /* Mirror preview like FaceTime/Zoom so gestures match what you expect */
+    transform: scaleX(-1);
+}
+
+.tumooh-webcam::-webkit-media-controls {
+    display: none !important;
+}
+
+.tumooh-webcam::-webkit-media-controls-enclosure {
+    display: none !important;
+}
+
+.tumooh-webcam::-webkit-media-controls-start-playback-button {
+    display: none !important;
+}
+

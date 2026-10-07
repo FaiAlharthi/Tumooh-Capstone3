@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head th:replace="~{fragments/layout :: head('Career hub — Tumooh')}"></head>
+<body class="min-h-screen bg-tumooh-light text-tumooh-navy font-sans antialiased flex flex-col">
+<header th:replace="~{fragments/layout :: mainNav(active='career')}"></header>
+<main class="flex-1 w-full px-4 sm:px-6 py-12 sm:py-16 flex flex-col items-center">
+    <div class="text-center max-w-xl mb-10 sm:mb-12">
+        <h1 class="text-3xl sm:text-4xl font-bold">Career hub</h1>
+        <p class="mt-3 text-tumooh-navy/70">Practice interviews, track sessions, and explore employers.</p>
+    </div>
+    <div class="grid sm:grid-cols-2 gap-6 w-full max-w-3xl">
+        <a th:href="@{/mock-interview/setup}" class="rounded-2xl bg-white p-6 shadow-soft border border-tumooh-navy/5 hover:border-tumooh-accent transition-colors block text-center sm:text-left">
+            <h2 class="font-semibold text-lg">Mock interview</h2>
+            <p class="mt-2 text-sm text-tumooh-navy/70">Live video practice with AI feedback</p>
+        </a>
+        <a th:href="@{/career/mock-interviews(userId=${userId})}" class="rounded-2xl bg-white p-6 shadow-soft border border-tumooh-navy/5 hover:border-tumooh-accent transition-colors block text-center sm:text-left">
+            <h2 class="font-semibold text-lg">My mock sessions</h2>
+            <p class="mt-2 text-sm text-tumooh-navy/70">Scores and past session history</p>
+        </a>
+        <a th:href="@{/career/interviews(userId=${userId})}" class="rounded-2xl bg-white p-6 shadow-soft border border-tumooh-navy/5 hover:border-tumooh-accent transition-colors block text-center sm:text-left">
+            <h2 class="font-semibold text-lg">Interviews</h2>
+            <p class="mt-2 text-sm text-tumooh-navy/70">Upcoming dates, status, and reminders</p>
+        </a>
+        <a th:href="@{/career/companies(userId=${userId})}" class="rounded-2xl bg-white p-6 shadow-soft border border-tumooh-navy/5 hover:border-tumooh-accent transition-colors block text-center sm:text-left">
+            <h2 class="font-semibold text-lg">Company match</h2>
+            <p class="mt-2 text-sm text-tumooh-navy/70">AI recommendations by major</p>
+        </a>
+    </div>
+</main>
+</body>
+</html>

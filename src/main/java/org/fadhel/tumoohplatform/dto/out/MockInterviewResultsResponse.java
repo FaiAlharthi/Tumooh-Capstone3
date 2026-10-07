@@ -1,21 +1,25 @@
 package org.fadhel.tumoohplatform.dto.out;
 
-import lombok.*;
+import lombok.AllArgsConstructor;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
+
 import java.time.LocalDateTime;
 
-@Getter 
-@Setter 
-@NoArgsConstructor 
+@Getter
+@Setter
+@NoArgsConstructor
 @AllArgsConstructor
-public class MockInterviewResponse {
+public class MockInterviewResultsResponse {
     private Long id;
-    private Long userId;
     private String jobTitle;
-    private String audioFilePath;
+    private LocalDateTime createdAt;
     private Double aiScore;
     private Double speechClarity;
     private String strengths;
     private String weaknesses;
     private String bodyLanguageTips;
-    private LocalDateTime createdAt;
+    private boolean evaluationAvailable;
+    private String message;
 }

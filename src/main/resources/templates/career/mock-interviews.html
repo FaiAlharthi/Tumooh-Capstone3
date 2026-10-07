@@ -1,0 +1,21 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head th:replace="~{fragments/layout :: head('My mocks — Tumooh')}"></head>
+<body class="min-h-screen bg-tumooh-light text-tumooh-navy font-sans antialiased flex flex-col">
+<header th:replace="~{fragments/layout :: mainNav(active='career')}"></header>
+<main class="flex-1 max-w-3xl mx-auto w-full px-4 sm:px-6 py-10 space-y-8">
+    <h1 class="text-2xl font-bold">Mock interview summary</h1>
+    <p id="career-error" class="hidden text-red-600 text-sm" role="alert"></p>
+    <div id="mock-summary" class="rounded-2xl bg-white p-6 shadow-soft border border-tumooh-navy/5 text-tumooh-navy/80 space-y-2">Loading…</div>
+    <div>
+        <h2 class="text-lg font-semibold mb-4">Past sessions</h2>
+        <ul id="mock-list" class="space-y-3 max-h-[32rem] overflow-y-auto pr-1"></ul>
+    </div>
+</main>
+<script th:inline="javascript">
+    window.TUMOOH_CAREER = { userId: /*[[${userId}]]*/ 1 };
+</script>
+<script th:src="@{/js/tumooh-api.js}"></script>
+<script th:src="@{/js/career-mock-interviews.js}"></script>
+</body>
+</html>
