@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head th:replace="~{fragments/layout :: head('Tumooh — Mock Interviews')}"></head>
+<body class="min-h-screen bg-tumooh-light text-tumooh-navy font-sans antialiased flex flex-col">
+<header th:replace="~{fragments/layout :: mainNav(active='home')}"></header>
+
+<main class="flex-1">
+    <section class="max-w-6xl mx-auto px-4 sm:px-6 py-16 sm:py-24">
+        <div class="grid lg:grid-cols-2 gap-12 items-center">
+            <div class="space-y-8">
+                <p class="text-tumooh-accent font-semibold tracking-wide uppercase text-sm">Career readiness platform</p>
+                <h1 class="text-4xl sm:text-5xl lg:text-6xl font-bold leading-tight text-tumooh-navy">
+                    Train for your next role with AI-powered mock interviews
+                </h1>
+                <p class="text-lg text-tumooh-navy/70 max-w-xl leading-relaxed">
+                    Practice under pressure, get real-time coaching signals, and receive structured feedback
+                    tailored to your target job title—in about a minute.
+                </p>
+                <div class="flex flex-col sm:flex-row gap-4">
+                    <a th:href="@{/mock-interview/setup}"
+                       class="inline-flex justify-center items-center rounded-2xl bg-tumooh-accent px-8 py-4 text-white font-semibold shadow-soft hover:brightness-105 transition-all focus:outline-none focus:ring-2 focus:ring-tumooh-accent focus:ring-offset-2">
+                        Start mock interview
+                    </a>
+                    <a href="#how-it-works"
+                       class="inline-flex justify-center items-center rounded-2xl border-2 border-tumooh-navy/15 px-8 py-4 font-semibold text-tumooh-navy hover:border-tumooh-accent hover:text-tumooh-accent transition-all">
+                        How it works
+                    </a>
+                </div>
+            </div>
+            <div class="relative hidden lg:block">
+                <div class="rounded-2xl bg-white p-8 shadow-soft border border-tumooh-navy/5">
+                    <img th:src="@{/logo/Tumooh-logo.png}" alt="" class="mx-auto max-h-48 opacity-95"/>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section id="how-it-works" class="bg-white border-y border-tumooh-navy/10 py-16 sm:py-20">
+        <div class="max-w-6xl mx-auto px-4 sm:px-6">
+            <h2 class="text-2xl sm:text-3xl font-bold text-center mb-12">Three steps to sharper interviews</h2>
+            <div class="grid md:grid-cols-3 gap-8">
+                <article class="rounded-2xl bg-tumooh-light p-6 border border-tumooh-navy/5 hover:shadow-soft transition-shadow">
+                    <span class="inline-flex h-10 w-10 items-center justify-center rounded-xl bg-tumooh-accent/15 text-tumooh-accent font-bold">1</span>
+                    <h3 class="mt-4 text-xl font-semibold">Setup</h3>
+                    <p class="mt-2 text-tumooh-navy/70">Enter your target job title. We align the session to that role.</p>
+                </article>
+                <article class="rounded-2xl bg-tumooh-light p-6 border border-tumooh-navy/5 hover:shadow-soft transition-shadow">
+                    <span class="inline-flex h-10 w-10 items-center justify-center rounded-xl bg-tumooh-accent/15 text-tumooh-accent font-bold">2</span>
+                    <h3 class="mt-4 text-xl font-semibold">Live minute</h3>
+                    <p class="mt-2 text-tumooh-navy/70">Camera on, timer running—simulate a real video interview with live indicators.</p>
+                </article>
+                <article class="rounded-2xl bg-tumooh-light p-6 border border-tumooh-navy/5 hover:shadow-soft transition-shadow">
+                    <span class="inline-flex h-10 w-10 items-center justify-center rounded-xl bg-tumooh-accent/15 text-tumooh-accent font-bold">3</span>
+                    <h3 class="mt-4 text-xl font-semibold">Feedback</h3>
+                    <p class="mt-2 text-tumooh-navy/70">AI evaluation with scores, clarity metrics, and actionable coaching.</p>
+                </article>
+            </div>
+        </div>
+    </section>
+</main>
+
+<footer class="py-8 text-center text-sm text-tumooh-navy/60">
+    <p>&copy; 2026 Tumooh</p>
+</footer>
+</body>
+</html>

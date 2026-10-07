@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head th:replace="~{fragments/layout :: head('Interviews — Tumooh')}"></head>
+<body class="min-h-screen bg-tumooh-light text-tumooh-navy font-sans antialiased flex flex-col">
+<header th:replace="~{fragments/layout :: mainNav(active='career')}"></header>
+<main class="flex-1 max-w-5xl mx-auto w-full px-4 sm:px-6 py-10 space-y-6">
+    <div class="flex flex-wrap items-end justify-between gap-4">
+        <h1 class="text-2xl font-bold">Upcoming interviews</h1>
+        <label class="text-sm">Filter status
+            <select id="status-filter" class="ml-2 rounded-lg border border-tumooh-navy/15 px-2 py-1">
+                <option value="">All</option>
+                <option value="SCHEDULED">SCHEDULED</option>
+                <option value="COMPLETED">COMPLETED</option>
+                <option value="CANCELLED">CANCELLED</option>
+            </select>
+        </label>
+    </div>
+    <p id="career-error" class="hidden text-red-600 text-sm" role="alert"></p>
+    <div class="overflow-x-auto rounded-2xl bg-white border border-tumooh-navy/10 shadow-soft">
+        <table class="w-full min-w-[36rem] text-sm border-collapse">
+            <colgroup>
+                <col style="width:3.5rem"/>
+                <col/>
+                <col style="width:11rem"/>
+                <col style="width:10rem"/>
+                <col style="width:8.5rem"/>
+            </colgroup>
+            <thead>
+            <tr class="border-b border-tumooh-navy/10 text-tumooh-navy/60">
+                <th scope="col" class="py-3 px-4 text-left font-medium">ID</th>
+                <th scope="col" class="py-3 px-4 text-left font-medium">Role</th>
+                <th scope="col" class="py-3 px-4 text-left font-medium">Date</th>
+                <th scope="col" class="py-3 px-4 text-left font-medium">Status</th>
+                <th scope="col" class="py-3 px-4 text-right font-medium">Actions</th>
+            </tr>
+            </thead>
+            <tbody id="interviews-table-body"></tbody>
+        </table>
+    </div>
+</main>
+<script th:inline="javascript">
+    window.TUMOOH_CAREER = { userId: /*[[${userId}]]*/ 1 };
+</script>
+<script th:src="@{/js/tumooh-api.js}"></script>
+<script th:src="@{/js/career-interviews.js}"></script>
+</body>
+</html>

@@ -24,8 +24,16 @@ public class MockInterview {
     private User user;
 
     private String jobTitle;
+
+    @Column(columnDefinition = "TEXT")
+    private String sessionQuestions;
+
+    @Column(columnDefinition = "TEXT")
+    private String sessionTelemetry;
+
     private String audioFilePath;
     private Double aiScore;
+    private Double speechClarity;
 
     @Column(columnDefinition = "TEXT")
     private String strengths;

@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org"
+      th:replace="~{email/layout :: layout(~{::main})}">
+<th:block th:fragment="main">
+    <p style="margin:0 0 16px;font-size:15px;line-height:1.65;color:rgba(11,37,69,0.80);">Hello,</p>
+    <p style="margin:0 0 24px;font-size:15px;line-height:1.65;color:rgba(11,37,69,0.80);">
+        Here is your AI feedback from your mock interview for
+        <strong style="color:#00B4A6;font-weight:600;" th:text="${jobTitle}">Role</strong>.
+    </p>
+
+    <table role="presentation" cellpadding="0" cellspacing="0" width="100%" style="margin:0 0 20px;">
+        <tr>
+            <td width="48%" style="vertical-align:top;padding-right:8px;">
+                <table role="presentation" cellpadding="0" cellspacing="0" width="100%"
+                       style="background-color:#ffffff;border:1px solid rgba(11,37,69,0.05);border-radius:16px;box-shadow:0 4px 24px -4px rgba(11,37,69,0.12);">
+                    <tr>
+                        <td style="padding:20px 18px;">
+                            <p style="margin:0 0 8px;font-size:11px;font-weight:600;text-transform:uppercase;letter-spacing:0.08em;color:rgba(11,37,69,0.60);">Confidence score</p>
+                            <p style="margin:0;font-size:32px;font-weight:700;color:#00B4A6;line-height:1.1;">
+                                <span th:text="${aiScore}">0</span><span style="font-size:16px;font-weight:500;color:rgba(11,37,69,0.50);"> / 100</span>
+                            </p>
+                        </td>
+                    </tr>
+                </table>
+            </td>
+            <td width="48%" style="vertical-align:top;padding-left:8px;">
+                <table role="presentation" cellpadding="0" cellspacing="0" width="100%"
+                       style="background-color:#ffffff;border:1px solid rgba(11,37,69,0.05);border-radius:16px;box-shadow:0 4px 24px -4px rgba(11,37,69,0.12);">
+                    <tr>
+                        <td style="padding:20px 18px;">
+                            <p style="margin:0 0 8px;font-size:11px;font-weight:600;text-transform:uppercase;letter-spacing:0.08em;color:rgba(11,37,69,0.60);">Speech clarity</p>
+                            <p style="margin:0;font-size:32px;font-weight:700;color:#0B2545;line-height:1.1;">
+                                <span th:text="${speechClarity}">—</span><span style="font-size:16px;font-weight:500;color:rgba(11,37,69,0.50);"> / 100</span>
+                            </p>
+                        </td>
+                    </tr>
+                </table>
+            </td>
+        </tr>
+    </table>
+
+    <table role="presentation" cellpadding="0" cellspacing="0" width="100%" style="margin:0 0 16px;">
+        <tr>
+            <td style="padding:20px 18px;background-color:#ffffff;border:1px solid rgba(11,37,69,0.05);border-radius:16px;">
+                <p style="margin:0 0 10px;font-size:17px;font-weight:600;color:#00B4A6;">Strengths</p>
+                <p th:text="${strengths}" style="margin:0;font-size:14px;line-height:1.65;color:rgba(11,37,69,0.80);white-space:pre-wrap;"></p>
+            </td>
+        </tr>
+    </table>
+
+    <table role="presentation" cellpadding="0" cellspacing="0" width="100%" style="margin:0 0 16px;">
+        <tr>
+            <td style="padding:20px 18px;background-color:#ffffff;border:1px solid rgba(11,37,69,0.05);border-radius:16px;">
+                <p style="margin:0 0 10px;font-size:17px;font-weight:600;color:#0B2545;">Areas to improve</p>
+                <p th:text="${weaknesses}" style="margin:0;font-size:14px;line-height:1.65;color:rgba(11,37,69,0.80);white-space:pre-wrap;"></p>
+            </td>
+        </tr>
+    </table>
+
+    <table role="presentation" cellpadding="0" cellspacing="0" width="100%" style="margin:0;">
+        <tr>
+            <td style="padding:20px 18px;background-color:#ffffff;border:1px solid rgba(11,37,69,0.05);border-radius:16px;">
+                <p style="margin:0 0 10px;font-size:17px;font-weight:600;color:#0B2545;">Body language &amp; presence</p>
+                <p th:text="${bodyLanguageTips}" style="margin:0;font-size:14px;line-height:1.65;color:rgba(11,37,69,0.80);white-space:pre-wrap;"></p>
+            </td>
+        </tr>
+    </table>
+</th:block>
+</html>

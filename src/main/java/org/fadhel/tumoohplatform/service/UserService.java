@@ -3,10 +3,10 @@ package org.fadhel.tumoohplatform.service;
 import lombok.RequiredArgsConstructor;
 import org.fadhel.tumoohplatform.Api.ApiException;
 import org.fadhel.tumoohplatform.dto.in.UserRequest;
+import org.fadhel.tumoohplatform.dto.out.UserResponse;
 import org.fadhel.tumoohplatform.model.User;
 import org.fadhel.tumoohplatform.repository.UserRepository;
 import org.springframework.stereotype.Service;
-
 import java.util.List;
 
 @Service
@@ -15,13 +15,17 @@ public class UserService {
 
     private final UserRepository userRepository;
 
-    public List<User> getAllUsers() {
-        return userRepository.findAll();
+    public List<UserResponse> getAllUsers() {
+        return userRepository.findAll().stream().map(this::mapToUserResponse).toList();
     }
 
     public User getUserById(Long id) {
         return userRepository.findById(id)
                 .orElseThrow(() -> new ApiException("User not found"));
+    }
+
+    public UserResponse mapToUserResponse(User user) {
+        return new UserResponse(user.getId(), user.getEmail(), user.getCreatedAt());
     }
 
     public void registerUser(UserRequest userRequest) {
@@ -39,7 +43,6 @@ public class UserService {
     }
 
     public void deleteUser(Long id) {
-        User user = getUserById(id);
-        userRepository.delete(user);
+        userRepository.delete(getUserById(id));
     }
 }

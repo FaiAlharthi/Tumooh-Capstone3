@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head th:replace="~{fragments/layout :: head('Feedback — Mock Interview')}"></head>
+<body class="min-h-screen bg-tumooh-light text-tumooh-navy font-sans antialiased flex flex-col">
+<header th:replace="~{fragments/layout :: mainNav(active='none')}"></header>
+
+<main class="flex-1 max-w-4xl mx-auto w-full px-4 sm:px-6 py-10 space-y-8">
+    <div>
+        <p class="text-sm text-tumooh-navy/60">Session complete</p>
+        <h1 class="text-3xl font-bold mt-1" th:text="${jobTitle}">Job title</h1>
+    </div>
+
+    <p id="feedback-loading" class="text-tumooh-navy/70">Generating AI feedback…</p>
+    <div id="feedback-error" class="hidden rounded-2xl border border-amber-200 bg-amber-50 px-5 py-4 text-amber-900" role="status"></div>
+
+    <div id="feedback-content" class="hidden space-y-8">
+        <div class="grid sm:grid-cols-2 gap-6">
+            <article class="rounded-2xl bg-white p-6 shadow-soft border border-tumooh-navy/5">
+                <h2 class="text-sm font-medium text-tumooh-navy/60 uppercase tracking-wide">Confidence score</h2>
+                <p class="mt-2 text-4xl font-bold text-tumooh-accent">
+                    <span id="score-value">0</span><span class="text-lg text-tumooh-navy/50">/ 100</span>
+                </p>
+                <div class="mt-4 h-3 rounded-full bg-tumooh-light overflow-hidden">
+                    <div id="score-bar" class="h-full bg-tumooh-accent transition-all duration-700 rounded-full" style="width:0"></div>
+                </div>
+            </article>
+            <article class="rounded-2xl bg-white p-6 shadow-soft border border-tumooh-navy/5">
+                <h2 class="text-sm font-medium text-tumooh-navy/60 uppercase tracking-wide">Speech clarity</h2>
+                <p class="mt-2 text-4xl font-bold text-tumooh-navy">
+                    <span id="clarity-value">0</span><span class="text-lg text-tumooh-navy/50">/ 100</span>
+                </p>
+            </article>
+        </div>
+
+        <div class="space-y-6">
+            <article class="rounded-2xl bg-white p-6 shadow-soft border border-tumooh-navy/5">
+                <h2 class="text-lg font-semibold text-tumooh-accent">Strengths</h2>
+                <p id="strengths-text" class="mt-3 text-tumooh-navy/80 leading-relaxed whitespace-pre-line">—</p>
+            </article>
+            <article class="rounded-2xl bg-white p-6 shadow-soft border border-tumooh-navy/5">
+                <h2 class="text-lg font-semibold">Areas to improve</h2>
+                <p id="weaknesses-text" class="mt-3 text-tumooh-navy/80 leading-relaxed whitespace-pre-line">—</p>
+            </article>
+            <article class="rounded-2xl bg-white p-6 shadow-soft border border-tumooh-navy/5">
+                <h2 class="text-lg font-semibold">Body language &amp; presence</h2>
+                <p id="body-language-text" class="mt-3 text-tumooh-navy/80 leading-relaxed whitespace-pre-line">—</p>
+            </article>
+        </div>
+
+    </div>
+
+    <div class="pt-4">
+        <a th:href="@{/mock-interview/setup}"
+           class="inline-flex rounded-2xl border-2 border-tumooh-navy/15 px-8 py-3.5 font-semibold text-tumooh-navy hover:border-tumooh-accent transition-colors">
+            Start another session
+        </a>
+    </div>
+</main>
+
+<script th:inline="javascript">
+    window.TUMOOH_FEEDBACK = { sessionId: /*[[${sessionId}]]*/ 0 };
+</script>
+<script th:src="@{/js/tumooh-api.js}"></script>
+<script th:src="@{/js/mock-interview-feedback.js}"></script>
+</body>
+</html>

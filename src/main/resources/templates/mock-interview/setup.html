@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head th:replace="~{fragments/layout :: head('Setup — Mock Interview')}"></head>
+<body class="min-h-screen bg-tumooh-light text-tumooh-navy font-sans antialiased flex flex-col">
+<header th:replace="~{fragments/layout :: mainNav(active='none')}"></header>
+
+<main class="flex-1 max-w-lg mx-auto w-full px-4 sm:px-6 py-12">
+    <div class="rounded-2xl bg-white p-8 shadow-soft border border-tumooh-navy/5">
+        <h1 class="text-2xl font-bold">Mock interview setup</h1>
+        <p class="mt-2 text-tumooh-navy/70">Enter your target role and start a timed video practice session.</p>
+
+        <form id="mock-setup-form" class="mt-8 space-y-6">
+            <input type="hidden" id="userId" th:value="${mockInterviewRequest.userId}"/>
+
+            <div>
+                <label for="jobTitle" class="block text-sm font-medium mb-2">Target job title</label>
+                <input id="jobTitle" type="text" name="jobTitle"
+                       placeholder="e.g. Software Engineer"
+                       class="w-full rounded-2xl border border-tumooh-navy/15 px-4 py-3 focus:outline-none focus:ring-2 focus:ring-tumooh-accent focus:border-transparent transition-shadow"
+                       autocomplete="organization-title" required/>
+            </div>
+
+            <p id="setup-error" class="hidden text-sm text-red-600" role="alert"></p>
+
+            <button type="submit" id="setup-submit"
+                    class="w-full rounded-2xl bg-tumooh-accent py-3.5 font-semibold text-white shadow-soft hover:brightness-105 transition-all focus:outline-none focus:ring-2 focus:ring-tumooh-accent focus:ring-offset-2">
+                Enter interview room
+            </button>
+        </form>
+    </div>
+</main>
+<script th:src="@{/js/tumooh-api.js}"></script>
+<script th:src="@{/js/mock-interview-setup.js}"></script>
+</body>
+</html>

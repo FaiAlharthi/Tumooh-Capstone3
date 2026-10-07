@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<!-- Tumooh brand: navy #0B2545 · accent #00B4A6 · light #F4F8F7 (see fragments/layout.html tailwind theme) -->
+<html lang="en" xmlns:th="http://www.thymeleaf.org" th:fragment="layout (content)">
+<head>
+    <meta charset="UTF-8"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+    <meta http-equiv="X-UA-Compatible" content="IE=edge"/>
+    <title th:text="${emailTitle} ?: 'Tumooh'">Tumooh</title>
+    <!--[if !mso]><!-->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&amp;display=swap" rel="stylesheet"/>
+    <!--<![endif]-->
+</head>
+<body style="margin:0;padding:0;background-color:#F4F8F7;font-family:Inter,Segoe UI,Roboto,Helvetica,Arial,sans-serif;color:#0B2545;-webkit-font-smoothing:antialiased;">
+<table role="presentation" cellpadding="0" cellspacing="0" width="100%" style="background-color:#F4F8F7;padding:32px 16px;">
+    <tr>
+        <td align="center">
+            <table role="presentation" cellpadding="0" cellspacing="0" width="100%"
+                   style="max-width:560px;background-color:#ffffff;border-radius:16px;overflow:hidden;border:1px solid rgba(11,37,69,0.05);box-shadow:0 4px 24px -4px rgba(11,37,69,0.12);">
+                <tr>
+                    <td style="background-color:#0B2545;padding:28px 28px 24px;text-align:center;">
+                        <p th:if="${emailSubtitle}" th:text="${emailSubtitle}"
+                           style="margin:0 0 10px;font-size:11px;font-weight:600;text-transform:uppercase;letter-spacing:0.12em;color:#00B4A6;">Subtitle</p>
+                        <span style="display:block;font-size:24px;font-weight:700;color:#ffffff;letter-spacing:0.02em;">Tumooh</span>
+                        <p th:if="${emailTitle}" th:text="${emailTitle}"
+                           style="margin:10px 0 0;font-size:14px;font-weight:500;color:rgba(255,255,255,0.88);"></p>
+                    </td>
+                </tr>
+                <tr>
+                    <td style="height:4px;background-color:#00B4A6;font-size:0;line-height:0;">&nbsp;</td>
+                </tr>
+                <tr>
+                    <td style="padding:28px 28px 12px;background-color:#ffffff;">
+                        <div th:replace="${content}">Content</div>
+                    </td>
+                </tr>
+                <tr>
+                    <td style="padding:20px 28px 28px;background-color:#F4F8F7;border-top:1px solid rgba(11,37,69,0.08);">
+                        <p style="margin:0;font-size:12px;line-height:1.55;color:rgba(11,37,69,0.60);">
+                            You received this message from <span style="color:#0B2545;font-weight:600;">Tumooh</span>.
+                            Please do not reply to this automated email.
+                        </p>
+                    </td>
+                </tr>
+            </table>
+        </td>
+    </tr>
+</table>
+</body>
+</html>
