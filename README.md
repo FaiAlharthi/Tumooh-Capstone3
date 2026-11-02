@@ -1,7 +1,7 @@
 <p align="center">
   <img src="assets/banner.png" alt="Tumooh" width="100%">
 </p>
-
+ 
 # Tumooh
 
 An AI-powered platform that helps job seekers in Saudi Arabia prepare for interviews and keep track of their applications. Built as a team capstone project at Tuwaiq Academy.
