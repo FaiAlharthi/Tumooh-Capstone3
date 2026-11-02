@@ -18,6 +18,8 @@ An AI-powered platform that helps job seekers in Saudi Arabia prepare for interv
 - **Application tracker:** follow every application from "Applied" to an offer, with interviews and reminders.
 - **Gmail sync:** reads your job-related emails and updates your tracker for you.
 
+📖 **Full endpoint documentation is in the [API reference](#api-reference) section below.**
+
 ## My part
 
 I built the job application side of the platform:
